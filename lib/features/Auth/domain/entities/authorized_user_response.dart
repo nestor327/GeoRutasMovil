@@ -1,4 +1,4 @@
-class AppUser {
+class AuthorizedUserResponse {
   final String Id;
   final String UserName;
   final String AccessToken;
@@ -10,7 +10,7 @@ class AppUser {
   final int? TimeZoneId;
   final int? LanguageId;
 
-  AppUser(
+  AuthorizedUserResponse(
       {required this.Id,
       required this.UserName,
       required this.AccessToken,
