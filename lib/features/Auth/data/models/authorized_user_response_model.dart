@@ -28,6 +28,17 @@ class AuthorizedUserResponseModel extends AuthorizedUserResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {};
+    return {
+      'AccessToken': AccessToken,
+      'AuthTokenValidityInMins': AuthTokenValidityInMins,
+      'CityId': CityId,
+      'Id': Id,
+      'LanguageId': LanguageId,
+      'RefreshToken': RefreshToken,
+      'RefreshTokenValidityInDays': RefreshTokenValidityInDays,
+      'TimeZoneId': TimeZoneId,
+      'UserImageUrl': UserImageUrl,
+      'UserName': UserName
+    };
   }
 }
