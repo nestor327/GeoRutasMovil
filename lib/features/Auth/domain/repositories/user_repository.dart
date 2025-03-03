@@ -8,7 +8,7 @@ import 'package:georutasmovil/features/Auth/domain/entities/user_sing_up_respons
 import 'package:georutasmovil/features/Auth/domain/entities/user_update_password_request.dart';
 
 abstract class UserRepository {
-  Future<Either<Failure, AuthorizedUserResponse>> Login(
+  Future<Either<Failure, AuthorizedUserResponse>> SingIn(
       UserSingInRequest request);
 
   Future<Either<Failure, UserSingUpResponse>> SingUp(UserSingUpRequest request);

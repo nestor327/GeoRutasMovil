@@ -11,6 +11,6 @@ class SingInUserUseCase {
 
   Future<Either<Failure, AuthorizedUserResponse>> call(
       UserSingInRequest request) async {
-    return userRepository.Login(request);
+    return userRepository.SingIn(request);
   }
 }
