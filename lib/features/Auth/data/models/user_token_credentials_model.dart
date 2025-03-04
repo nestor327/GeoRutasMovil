@@ -26,6 +26,19 @@ class UserTokenCredentialsModel extends UserTokenCredentials {
         TimeZoneId: entitie.TimeZoneId,
         LanguageId: entitie.LanguageId);
   }
+  factory UserTokenCredentialsModel.fromJson(json) {
+    return UserTokenCredentialsModel(
+        AccessToken: json['AccessToken'],
+        AuthTokenValidityInMins: json['AuthTokenValidityInMins'],
+        CityId: json['CityId'],
+        Id: json['Id'],
+        LanguageId: json['LanguageId'],
+        RefreshToken: json['RefreshToken'],
+        RefreshTokenValidityInDays: json['RefreshTokenValidityInDays'],
+        TimeZoneId: json['TimeZoneId'],
+        UserImageUrl: json['TimeZoneId'],
+        UserName: json['UserName']);
+  }
   Map<String, dynamic> toJson() {
     return {
       "Id": Id,
