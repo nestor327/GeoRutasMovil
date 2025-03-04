@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Auth/data/models/user_token_credentials_model.dart';
 import 'package:georutasmovil/features/Auth/domain/entities/user_token_credentials.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -18,7 +18,13 @@ class HiveUserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<UserTokenCredentialsModel> GetUserTokensCredential() async {
-    throw UnimplementedError();
+    try {
+      Box<String> box = await Hive.openBox("userTokens");
+
+      return UserTokenCredentialsModel.fromJson(box.get("userCredentials"));
+    } catch (error) {
+      return Future.error(LocalFailure());
+    }
   }
 
   @override
@@ -27,13 +33,13 @@ class HiveUserLocalDataSourceImpl implements UserLocalDataSource {
       Box<String> box = await Hive.openBox("userTokens");
 
       box.put(
-          credentials.Id,
+          "userCredentials",
           jsonEncode(UserTokenCredentialsModel.fromEntity(credentials)
               .toJson()
               .toString()));
       return true;
     } catch (error) {
-      return false;
+      return Future.error(LocalFailure());
     }
   }
 }

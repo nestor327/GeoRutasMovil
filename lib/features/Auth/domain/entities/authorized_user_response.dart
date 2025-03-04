@@ -21,4 +21,18 @@ class AuthorizedUserResponse {
       required this.CityId,
       required this.TimeZoneId,
       required this.LanguageId});
+
+  factory AuthorizedUserResponse.fromJson(json) {
+    return AuthorizedUserResponse(
+        Id: json["Id"],
+        UserName: json["UserName"],
+        AccessToken: json["AccessToken"],
+        AuthTokenValidityInMins: json["AuthTokenValidityInMins"],
+        RefreshToken: json["RefreshToken"],
+        RefreshTokenValidityInDays: json["RefreshTokenValidityInDays"],
+        UserImageUrl: json["UserImageUrl"],
+        CityId: json["CityId"],
+        TimeZoneId: json["TimeZoneId"],
+        LanguageId: json["LanguageId"]);
+  }
 }
