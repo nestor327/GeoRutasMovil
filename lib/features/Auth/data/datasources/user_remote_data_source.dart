@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:georutasmovil/core/error/Failure.dart';
+import 'package:georutasmovil/features/Auth/data/datasources/user_local_data_source.dart';
 import 'package:georutasmovil/features/Auth/data/models/authorized_user_response_model.dart';
+import 'package:georutasmovil/features/Auth/data/models/user_token_credentials_model.dart';
 import 'package:georutasmovil/features/Auth/domain/entities/user_sing_in_request.dart';
 
 abstract class UserRemoteDataSource {
@@ -11,24 +16,33 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<AuthorizedUserResponseModel> SingIn(UserSingInRequest request) async {
-    final resp = await dio.post(
-      'https://localhost:5001/v1/auth/login',
-      options: Options(
-        headers: {
-          'accept': 'text/plain',
-          'X-Language': 'es',
-          'Content-Type': 'application/json',
+    try {
+      final UserTokenCredentialsModel localCredentials =
+          await HiveUserLocalDataSourceImpl().GetUserTokensCredential();
+
+      if (localCredentials.Id.isNotEmpty) {}
+
+      final resp = await dio.post(
+        'https://localhost:5001/v1/auth/login',
+        options: Options(
+          headers: {
+            'accept': 'text/plain',
+            'X-Language': 'es',
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: {
+          'email': request.Email,
+          'password': request.Password,
         },
-      ),
-      data: {
-        'email': request.Email,
-        'password': request.Password,
-      },
-    );
+      );
 
-    final AuthorizedUserResponseModel user =
-        AuthorizedUserResponseModel.fromJson(resp);
+      final AuthorizedUserResponseModel user =
+          AuthorizedUserResponseModel.fromJson(resp);
 
-    return user;
+      return user;
+    } catch (error) {
+      return Future.error(LocalFailure());
+    }
   }
 }
