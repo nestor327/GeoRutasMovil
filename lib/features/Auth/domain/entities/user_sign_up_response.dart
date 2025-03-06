@@ -1,4 +1,4 @@
-class UserSingUpResponse {
+class UserSignUpResponse {
   final String Id;
   final String UserName;
   final String AccessToken;
@@ -10,7 +10,7 @@ class UserSingUpResponse {
   final int? TimeZoneId;
   final int? LanguageId;
 
-  UserSingUpResponse(
+  UserSignUpResponse(
       {required this.Id,
       required this.UserName,
       required this.AccessToken,

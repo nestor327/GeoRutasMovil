@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Auth/domain/entities/authorized_user_response.dart';
-import 'package:georutasmovil/features/Auth/domain/entities/user_sing_in_request.dart';
+import 'package:georutasmovil/features/Auth/domain/entities/user_sign_in_request.dart';
 import 'package:georutasmovil/features/Auth/domain/repositories/user_repository.dart';
 
-class SingInUserUseCase {
+class SignInUserUseCase {
   final UserRepository userRepository;
 
-  SingInUserUseCase({required this.userRepository});
+  SignInUserUseCase({required this.userRepository});
 
   Future<Either<Failure, AuthorizedUserResponse>> call(
-      UserSingInRequest request) async {
-    return userRepository.SingIn(request);
+      UserSignInRequest request) async {
+    return userRepository.SignIn(request);
   }
 }

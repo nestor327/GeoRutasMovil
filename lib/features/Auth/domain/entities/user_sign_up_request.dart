@@ -1,4 +1,4 @@
-class UserSingUpRequest {
+class UserSignUpRequest {
   final String Email;
   final String Password;
   final int FirstName;
@@ -8,7 +8,7 @@ class UserSingUpRequest {
   final int? UserImageUrl;
   final int? LanguageId;
 
-  UserSingUpRequest(
+  UserSignUpRequest(
       {required this.Email,
       required this.Password,
       required this.FirstName,
