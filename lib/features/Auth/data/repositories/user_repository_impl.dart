@@ -21,9 +21,15 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<Failure, bool>> ResetPassword(
-      UserResetPasswordRequest request) {
-    // TODO: implement ResetPassword
-    throw UnimplementedError();
+      UserResetPasswordRequest request) async {
+    try {
+      final response = await userRemoteDataSource.ResetPassword(request);
+
+      return response.fold(
+          (_) => left(ServerFailure()), (reset) => Right(reset));
+    } catch (err) {
+      return left(LocalFailure());
+    }
   }
 
   @override
@@ -40,16 +46,28 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<Failure, UserSignUpResponse>> SignUp(
-      UserSignUpRequest request) {
-    // TODO: implement SignUp
-    throw UnimplementedError();
+      UserSignUpRequest request) async {
+    try {
+      final response = await userRemoteDataSource.SignUp(request);
+
+      return response.fold(
+          (_) => left(ServerFailure()), (reset) => Right(reset));
+    } catch (err) {
+      return left(LocalFailure());
+    }
   }
 
   @override
   Future<Either<Failure, bool>> UpdatePassword(
-      UserUpdatePasswordRequest request) {
-    // TODO: implement UpdatePassword
-    throw UnimplementedError();
+      UserUpdatePasswordRequest request) async {
+    try {
+      final response = await userRemoteDataSource.UpdatePassword(request);
+
+      return response.fold(
+          (_) => left(ServerFailure()), (reset) => Right(reset));
+    } catch (err) {
+      return left(LocalFailure());
+    }
   }
 
   @override
