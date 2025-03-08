@@ -40,3 +40,51 @@ final class SignInSuccess extends UserState {
   @override
   List<Object> get props => [signInResponse];
 }
+
+final class RefreshTokenLoading extends UserState {}
+
+final class RefreshTokenFailure extends UserState {
+  final String errorMessage;
+  const RefreshTokenFailure({required this.errorMessage});
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+final class RefreshTokenSuccess extends UserState {
+  final AuthorizedUserResponse refreshTokenResponse;
+  const RefreshTokenSuccess({required this.refreshTokenResponse});
+  @override
+  List<Object> get props => [refreshTokenResponse];
+}
+
+class ResetPasswordLoading extends UserState {}
+
+final class ResetPasswordFailure extends UserState {
+  final String errorMessage;
+  const ResetPasswordFailure({required this.errorMessage});
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+final class ResetPasswordSuccess extends UserState {
+  final bool resetPasswordResponse;
+  const ResetPasswordSuccess({required this.resetPasswordResponse});
+  @override
+  List<Object> get props => [resetPasswordResponse];
+}
+
+class UpdatePasswordLoading extends UserState {}
+
+final class UpdatePasswordFailure extends UserState {
+  final String errorMessage;
+  const UpdatePasswordFailure({required this.errorMessage});
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+final class UpdatePasswordSuccess extends UserState {
+  final bool updatePasswordResponse;
+  const UpdatePasswordSuccess({required this.updatePasswordResponse});
+  @override
+  List<Object> get props => [updatePasswordResponse];
+}

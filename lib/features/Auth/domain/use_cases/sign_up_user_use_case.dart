@@ -7,7 +7,7 @@ import 'package:georutasmovil/features/Auth/domain/repositories/user_repository.
 class SignUpUserUseCase {
   final UserRepository userRepository;
 
-  SignUpUserUseCase(this.userRepository);
+  SignUpUserUseCase({required this.userRepository});
 
   Future<Either<Failure, UserSignUpResponse>> call(
       UserSignUpRequest request) async {

@@ -24,3 +24,30 @@ class SignInUserEvent extends UserEvent {
   @override
   List<Object> get props => [signInRequest];
 }
+
+class RefreshTokenEvent extends UserEvent {
+  final UserRefreshTokenRequest refreshTokenRequest;
+
+  const RefreshTokenEvent({required this.refreshTokenRequest});
+
+  @override
+  List<Object> get props => [refreshTokenRequest];
+}
+
+class ResetPasswordEvent extends UserEvent {
+  final UserResetPasswordRequest resetPasswordRequest;
+
+  const ResetPasswordEvent({required this.resetPasswordRequest});
+
+  @override
+  List<Object> get props => [resetPasswordRequest];
+}
+
+class UpdatePasswordEvent extends UserEvent {
+  final UserUpdatePasswordRequest updatePasswordRequest;
+
+  const UpdatePasswordEvent({required this.updatePasswordRequest});
+
+  @override
+  List<Object> get props => [updatePasswordRequest];
+}
