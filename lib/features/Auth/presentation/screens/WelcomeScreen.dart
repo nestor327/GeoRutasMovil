@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignUpScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
