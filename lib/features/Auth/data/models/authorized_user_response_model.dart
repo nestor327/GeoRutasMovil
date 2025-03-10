@@ -15,16 +15,16 @@ class AuthorizedUserResponseModel extends AuthorizedUserResponse {
 
   factory AuthorizedUserResponseModel.fromJson(json) {
     return AuthorizedUserResponseModel(
-        AccessToken: json['AccessToken'],
-        AuthTokenValidityInMins: json['AuthTokenValidityInMins'],
-        CityId: json['CityId'],
-        Id: json['Id'],
-        LanguageId: json['LanguageId'],
-        RefreshToken: json['RefreshToken'],
-        RefreshTokenValidityInDays: json['RefreshTokenValidityInDays'],
-        TimeZoneId: json['TimeZoneId'],
-        UserImageUrl: json['TimeZoneId'],
-        UserName: json['UserName']);
+        AccessToken: json['accessToken'] ?? "",
+        AuthTokenValidityInMins: json['authTokenValidityInMins'],
+        CityId: json['cityId'] ?? 1,
+        Id: json['id'],
+        LanguageId: json['languageId'] ?? 1,
+        RefreshToken: json['refreshToken'],
+        RefreshTokenValidityInDays: json['refreshTokenValidityInDays'],
+        TimeZoneId: json['timeZoneId'] ?? 1,
+        UserImageUrl: json['userImageUrl'],
+        UserName: json['userName']);
   }
 
   Map<String, dynamic> toJson() {

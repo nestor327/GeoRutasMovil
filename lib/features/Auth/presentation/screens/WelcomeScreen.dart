@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:georutasmovil/features/Auth/domain/entities/Refresh_token_request.dart';
+import 'package:georutasmovil/features/Auth/domain/entities/user_sign_in_request.dart';
+import 'package:georutasmovil/features/Auth/presentation/bloc/User/user_bloc.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignUpScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
@@ -44,6 +48,15 @@ class WelcomeScreen extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: Row(
                   children: [
+                    TextButton.icon(
+                      onPressed: () => {
+                        context.read<UserBloc>().add(RefreshTokenEvent(
+                            refreshTokenRequest: UserRefreshTokenRequest(
+                                AccessToken: "AccessToken",
+                                RefreshToken: "RefreshToken")))
+                      },
+                      label: Text("Que pedo"),
+                    ),
                     const Expanded(
                       child: WelcomeButton(
                         buttonText: 'Sign in',
