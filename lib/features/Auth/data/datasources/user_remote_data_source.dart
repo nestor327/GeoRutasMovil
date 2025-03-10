@@ -31,7 +31,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       UserSignInRequest request) async {
     try {
       final resp = await dio.post(
-        'https://localhost:5001/v1/auth/login',
+        'http://192.168.1.14:5000/v1/auth/login',
         options: Options(
           headers: {
             'accept': 'text/plain',
@@ -54,6 +54,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         return Left(ServerFailure());
       }
     } catch (error) {
+      print("El error encontrado fue: " + error.toString());
+      print("El error: " + request.Email + ", " + request.Password);
+      print(error);
       return Left(LocalFailure());
     }
   }
@@ -63,7 +66,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       UserRefreshTokenRequest request) async {
     try {
       final refrehLogin = await dio.post(
-        'https://localhost:5001/v1/auth/refresh-token',
+        'http://192.168.1.14:5000/v1/auth/refresh-token',
         options: Options(
           headers: {
             'accept': 'text/plain',
@@ -92,7 +95,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       UserResetPasswordRequest request) async {
     try {
       final resetPassword = await dio.post(
-        'https://localhost:5001/v1/auth/reset-password',
+        'http://192.168.1.14:5000/v1/auth/reset-password',
         options: Options(
           headers: {
             'accept': 'text/plain',
@@ -121,7 +124,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       UserSignUpRequest request) async {
     try {
       final signUpResponse = await dio.post(
-        'https://localhost:5001/v1/account/users',
+        'http://192.168.1.14:5000/v1/account/users',
         options: Options(
           headers: {
             'accept': 'text/plain',
@@ -156,7 +159,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       UserUpdatePasswordRequest request) async {
     try {
       final updatePassword = await dio.put(
-        'https://localhost:5001/v1/auth/update-password',
+        'http://192.168.1.14:5000/v1/auth/update-password',
         options: Options(
           headers: {
             'accept': 'text/plain',

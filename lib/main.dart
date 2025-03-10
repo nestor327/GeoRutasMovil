@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/di.dart';
 import 'package:georutasmovil/features/Auth/presentation/bloc/User/user_bloc.dart';
-import 'package:georutasmovil/features/Auth/presentation/screens/WelcomeScreen.dart';
 import 'package:georutasmovil/features/coodinates/presentation/bloc/getCoordinates/GetCoordinatesBloc.dart';
+import 'package:georutasmovil/shared/router.dart';
 import 'package:georutasmovil/theme/theme.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => GetIt.instance<GetCoordinatesBloc>()),
         BlocProvider(create: (_) => GetIt.instance<UserBloc>())
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Flutter Demo',
         theme: lightMode,
-        home: const WelcomeScreen(),
+        routerConfig: RouterLocalConfig(),
         debugShowCheckedModeBanner: false,
       ),
     );

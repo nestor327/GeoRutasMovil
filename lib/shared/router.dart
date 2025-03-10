@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.dart';
+import 'package:georutasmovil/features/Auth/presentation/screens/SignUpScreen.dart';
+import 'package:georutasmovil/features/Auth/presentation/screens/WelcomeScreen.dart';
+import 'package:go_router/go_router.dart';
+
+GoRouter RouterLocalConfig() {
+  return GoRouter(
+      initialLocation: "/welcome",
+      errorBuilder: (contex, state) {
+        return Scaffold(
+          appBar: AppBar(title: const Text("Error")),
+          body: const Center(child: Text("Pagina no encontrada")),
+        );
+      },
+      routes: [
+        GoRoute(
+            path: "/welcome",
+            builder: (contex, state) => const WelcomeScreen()),
+        GoRoute(
+            path: "/sign-in", builder: (contex, state) => const SignInScreen()),
+        GoRoute(
+            path: "/sign-up", builder: (contex, state) => const SignUpScreen())
+      ]);
+}
