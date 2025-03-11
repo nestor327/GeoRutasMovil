@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignUpScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/WelcomeScreen.dart';
+import 'package:georutasmovil/features/Routes/presentation/screens/HomeScreen.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter RouterLocalConfig() {
@@ -20,6 +21,7 @@ GoRouter RouterLocalConfig() {
         GoRoute(
             path: "/sign-in", builder: (contex, state) => const SignInScreen()),
         GoRoute(
-            path: "/sign-up", builder: (contex, state) => const SignUpScreen())
+            path: "/sign-up", builder: (contex, state) => const SignUpScreen()),
+        GoRoute(path: "/home", builder: (contex, state) => const HomeScreen())
       ]);
 }
