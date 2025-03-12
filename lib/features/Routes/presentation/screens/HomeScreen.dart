@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,10 +14,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Text("Home, Mensaje de prueba"),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Ciudad Dario"),
+      ),
+      body: const GoogleMap(
+          initialCameraPosition:
+              CameraPosition(target: LatLng(12.728850, -86.124645))),
       backgroundColor: Colors.amber,
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.directions_bus_rounded), label: "Buses"),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
