@@ -54,9 +54,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         return Left(ServerFailure());
       }
     } catch (error) {
-      print("El error encontrado fue: " + error.toString());
-      print("El error: " + request.Email + ", " + request.Password);
-      print(error);
       return Left(LocalFailure());
     }
   }

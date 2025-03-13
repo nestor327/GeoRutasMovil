@@ -28,29 +28,29 @@ class UserTokenCredentialsModel extends UserTokenCredentials {
   }
   factory UserTokenCredentialsModel.fromJson(json) {
     return UserTokenCredentialsModel(
-        AccessToken: json['AccessToken'],
-        AuthTokenValidityInMins: json['AuthTokenValidityInMins'],
-        CityId: json['CityId'],
-        Id: json['Id'],
-        LanguageId: json['LanguageId'],
-        RefreshToken: json['RefreshToken'],
-        RefreshTokenValidityInDays: json['RefreshTokenValidityInDays'],
-        TimeZoneId: json['TimeZoneId'],
-        UserImageUrl: json['TimeZoneId'],
-        UserName: json['UserName']);
+        AccessToken: json['accessToken'],
+        AuthTokenValidityInMins: json['authTokenValidityInMins'],
+        CityId: json['cityId'],
+        Id: json['id'],
+        LanguageId: json['languageId'],
+        RefreshToken: json['refreshToken'],
+        RefreshTokenValidityInDays: json['refreshTokenValidityInDays'],
+        TimeZoneId: json['timeZoneId'],
+        UserImageUrl: json['userImageUrl'],
+        UserName: json['userName']);
   }
   Map<String, dynamic> toJson() {
     return {
-      "Id": Id,
-      "UserName": UserName,
-      "AccessToken": AccessToken,
-      "AuthTokenValidityInMins": AuthTokenValidityInMins,
-      "RefreshToken": RefreshToken,
-      "RefreshTokenValidityInDays": RefreshTokenValidityInDays,
-      "UserImageUrl": UserImageUrl,
-      "CityId": CityId,
-      "TimeZoneId": TimeZoneId,
-      "LanguageId": LanguageId
+      "id": Id,
+      "userName": UserName,
+      "accessToken": AccessToken,
+      "authTokenValidityInMins": AuthTokenValidityInMins,
+      "refreshToken": RefreshToken,
+      "refreshTokenValidityInDays": RefreshTokenValidityInDays,
+      "userImageUrl": UserImageUrl,
+      "cityId": CityId,
+      "timeZoneId": TimeZoneId,
+      "languageId": LanguageId
     };
   }
 }

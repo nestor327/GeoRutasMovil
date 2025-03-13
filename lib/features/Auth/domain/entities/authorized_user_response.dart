@@ -24,15 +24,15 @@ class AuthorizedUserResponse {
 
   factory AuthorizedUserResponse.fromJson(json) {
     return AuthorizedUserResponse(
-        Id: json["Id"],
-        UserName: json["UserName"],
-        AccessToken: json["AccessToken"],
-        AuthTokenValidityInMins: json["AuthTokenValidityInMins"],
-        RefreshToken: json["RefreshToken"],
-        RefreshTokenValidityInDays: json["RefreshTokenValidityInDays"],
-        UserImageUrl: json["UserImageUrl"],
-        CityId: json["CityId"],
-        TimeZoneId: json["TimeZoneId"],
-        LanguageId: json["LanguageId"]);
+        Id: json["id"],
+        UserName: json["userName"],
+        AccessToken: json["accessToken"],
+        AuthTokenValidityInMins: json["authTokenValidityInMins"],
+        RefreshToken: json["refreshToken"],
+        RefreshTokenValidityInDays: json["refreshTokenValidityInDays"],
+        UserImageUrl: json["userImageUrl"],
+        CityId: json["cityId"],
+        TimeZoneId: json["timeZoneId"],
+        LanguageId: json["languageId"]);
   }
 }
