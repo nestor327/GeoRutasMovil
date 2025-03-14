@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Auth/data/models/user_token_credentials_model.dart';
-import 'package:georutasmovil/features/Auth/domain/entities/user_token_credentials.dart';
+import 'package:georutasmovil/features/Auth/domain/entities/authorized_user_response.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class UserLocalDataSource {
@@ -20,10 +20,11 @@ class HiveUserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<Either<Failure, bool>> SetUserTokensCredential(
-      UserTokenCredentials credentials) async {
+      AuthorizedUserResponse credentials) async {
     try {
       Box<String> box = await Hive.openBox("userTokens");
 
+      box.clear();
       box.put(
           "userCredentials",
           jsonEncode(UserTokenCredentialsModel.fromEntity(credentials)
