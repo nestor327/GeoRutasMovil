@@ -1,6 +1,6 @@
-import 'package:georutasmovil/features/Auth/domain/entities/user_token_credentials.dart';
+import 'package:georutasmovil/features/Auth/domain/entities/authorized_user_response.dart';
 
-class UserTokenCredentialsModel extends UserTokenCredentials {
+class UserTokenCredentialsModel extends AuthorizedUserResponse {
   UserTokenCredentialsModel(
       {required super.Id,
       required super.UserName,
@@ -13,7 +13,7 @@ class UserTokenCredentialsModel extends UserTokenCredentials {
       required super.TimeZoneId,
       required super.LanguageId});
 
-  factory UserTokenCredentialsModel.fromEntity(UserTokenCredentials entitie) {
+  factory UserTokenCredentialsModel.fromEntity(AuthorizedUserResponse entitie) {
     return UserTokenCredentialsModel(
         Id: entitie.Id,
         UserName: entitie.UserName,
