@@ -10,12 +10,17 @@ import 'package:georutasmovil/features/coodinates/presentation/bloc/getCoordinat
 import 'package:georutasmovil/shared/router.dart';
 import 'package:georutasmovil/theme/theme.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'features/Auth/data/datasources/user_local_data_source.dart';
 
 void main() async {
   await init();
+  await Hive.initFlutter();
+  await Hive.openBox<String>('userTokens');
+
   bool result = await checkIfAuthenticated();
+  print("El valor de es autenticado es " + result.toString());
   runApp(MyApp(isAuthenticated: result));
 }
 
@@ -28,7 +33,6 @@ Future<bool> checkIfAuthenticated() async {
       userRemoteDataSource: userRemoteDataSource);
 
   final data = await userRepository.GetUserTokensCredential();
-
   return data.fold((_) => false, (credentials) async {
     return (await userRepository.RefreshToken(UserRefreshTokenRequest(
             AccessToken: credentials.AccessToken,

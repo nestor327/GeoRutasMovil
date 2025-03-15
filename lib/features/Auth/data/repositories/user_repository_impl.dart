@@ -40,7 +40,11 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final response = await userRemoteDataSource.SignIn(request);
 
-      return response.fold((_) => left(ServerFailure()), (auth) => Right(auth));
+      return response.fold((_) => left(ServerFailure()), (auth) {
+        userLocalDataSource.SetUserTokensCredential(
+            UserTokenCredentialsModel.fromEntity(auth));
+        return Right(auth);
+      });
     } catch (err) {
       return left(LocalFailure());
     }

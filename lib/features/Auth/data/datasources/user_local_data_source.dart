@@ -6,7 +6,6 @@ import 'package:georutasmovil/features/Auth/domain/entities/authorized_user_resp
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class UserLocalDataSource {
-  //Aqui prevaleceran los datos del usaurio en el tiempo
   Future<Either<Failure, bool>> SetUserTokensCredential(
       UserTokenCredentialsModel credentials);
 
@@ -15,7 +14,7 @@ abstract class UserLocalDataSource {
 
 class HiveUserLocalDataSourceImpl implements UserLocalDataSource {
   HiveUserLocalDataSourceImpl() {
-    Hive.initFlutter();
+    // Hive.initFlutter();
   }
 
   @override
@@ -27,9 +26,8 @@ class HiveUserLocalDataSourceImpl implements UserLocalDataSource {
       box.clear();
       box.put(
           "userCredentials",
-          jsonEncode(UserTokenCredentialsModel.fromEntity(credentials)
-              .toJson()
-              .toString()));
+          jsonEncode(
+              UserTokenCredentialsModel.fromEntity(credentials).toJson()));
 
       return right(true);
     } catch (error) {
@@ -43,8 +41,8 @@ class HiveUserLocalDataSourceImpl implements UserLocalDataSource {
     try {
       Box<String> box = await Hive.openBox("userTokens");
 
-      return Right(
-          UserTokenCredentialsModel.fromJson(box.get("userCredentials")));
+      return Right(UserTokenCredentialsModel.fromJson(
+          jsonDecode(box.get("userCredentials")!)));
     } catch (error) {
       return left(LocalFailure());
     }
