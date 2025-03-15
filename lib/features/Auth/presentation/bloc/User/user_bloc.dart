@@ -42,29 +42,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<SignInUserEvent>((event, emit) async {
       emit(SignInLoading());
-      print("Se actualizo la mierda ");
       try {
-        print("Se actualizo la mierda " + "1");
         final response = await _signInUserUseCase(event.signInRequest);
-        print("Se actualizo la mierda " + "2");
+
         response.fold(
             (f) => emit(const SignInFailure(errorMessage: "SignIn Fail")),
             (success) => emit(SignInSuccess(signInResponse: success)));
-      } catch (error) {
-        print("El error dentro del bloc es: " + error.toString());
-      }
+      } catch (error) {}
     });
 
     on<RefreshTokenEvent>((event, emit) async {
-      emit(UserInitial());
+      emit(RefreshTokenLoading());
 
-      // final response = await _refreshTokenUseCase(event.refreshTokenRequest);
+      final response = await _refreshTokenUseCase(event.refreshTokenRequest);
 
-      // response.fold(
-      //     (f) => emit(
-      //         const RefreshTokenFailure(errorMessage: "RefreshToken Fail")),
-      //     (success) =>
-      //         emit(RefreshTokenSuccess(refreshTokenResponse: success)));
+      response.fold(
+          (f) => emit(
+              const RefreshTokenFailure(errorMessage: "RefreshToken Fail")),
+          (success) =>
+              emit(RefreshTokenSuccess(refreshTokenResponse: success)));
     });
 
     on<ResetPasswordEvent>((event, emit) async {

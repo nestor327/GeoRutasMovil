@@ -18,6 +18,8 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
+  TextEditingController _userNameControler = TextEditingController();
+  TextEditingController _passwordControler = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             height: 40.0,
                           ),
                           TextFormField(
+                            controller: _userNameControler,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Email';
@@ -96,6 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             height: 25.0,
                           ),
                           TextFormField(
+                            controller: _passwordControler,
                             obscureText: true,
                             obscuringCharacter: '*',
                             validator: (value) {
@@ -168,24 +172,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formSignInKey.currentState!.validate() &&
-                                    rememberPassword) {
+                                    (rememberPassword || !rememberPassword)) {
                                   final signInRequest = UserSignInRequest(
-                                      Email: "nestorgt37@gmail.com",
-                                      Password: "ndgtzoro");
+                                      Email: _userNameControler.text,
+                                      Password: _passwordControler.text);
                                   context.read<UserBloc>().add(SignInUserEvent(
                                       signInRequest: signInRequest));
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Processing Data'),
-                                    ),
-                                  );
-                                } else if (!rememberPassword) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'Please agree to the processing of personal data')),
-                                  );
                                 }
                               },
                               child: const Text('Sign In'),

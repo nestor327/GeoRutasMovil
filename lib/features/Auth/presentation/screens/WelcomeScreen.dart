@@ -47,15 +47,6 @@ class WelcomeScreen extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: Row(
                   children: [
-                    TextButton.icon(
-                      onPressed: () => {
-                        context.read<UserBloc>().add(RefreshTokenEvent(
-                            refreshTokenRequest: UserRefreshTokenRequest(
-                                AccessToken: "AccessToken",
-                                RefreshToken: "RefreshToken")))
-                      },
-                      label: Text("Que pedo"),
-                    ),
                     const Expanded(
                       child: WelcomeButton(
                         buttonText: 'Sign in',
