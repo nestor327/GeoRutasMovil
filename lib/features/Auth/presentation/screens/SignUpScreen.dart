@@ -15,6 +15,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
+  String? selectedCountry = "";
+  final countries = ["Nicaragua", "El Salvador"];
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -148,6 +150,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 25.0,
+                      ),
+                      DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: 'Select Country',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          items: countries.map((String country) {
+                            return DropdownMenuItem<String>(
+                              value: country,
+                              child: Text(country),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedCountry = newValue;
+                            });
+                          }),
                       const SizedBox(
                         height: 25.0,
                       ),
