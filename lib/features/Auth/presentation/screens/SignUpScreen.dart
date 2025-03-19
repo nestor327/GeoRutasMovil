@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:georutasmovil/shared/data/countries.dart';
 import 'package:georutasmovil/theme/theme.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -16,7 +16,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
   String? selectedCountry = "";
-  final countries = ["Nicaragua", "El Salvador"];
+  final countries = ["Nicaragua", "El Salvador", "Panama", "Costa Rica"];
+  final countriesTwo = GetCountries();
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -159,10 +160,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
-                          items: countries.map((String country) {
+                          items: countriesTwo.entries
+                              .map<DropdownMenuItem<String>>((entry) {
                             return DropdownMenuItem<String>(
-                              value: country,
-                              child: Text(country),
+                              value: entry.value, // Usa el valor del mapa
+                              child: Text(
+                                  entry.value), // Muestra el nombre del país
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
