@@ -9,7 +9,7 @@ class AuthorizedUserResponseModel extends AuthorizedUserResponse {
       required super.RefreshToken,
       required super.RefreshTokenValidityInDays,
       required super.UserImageUrl,
-      required super.CityId,
+      required super.CountryId,
       required super.TimeZoneId,
       required super.LanguageId});
 
@@ -17,7 +17,7 @@ class AuthorizedUserResponseModel extends AuthorizedUserResponse {
     return AuthorizedUserResponseModel(
         AccessToken: json['accessToken'] ?? "",
         AuthTokenValidityInMins: json['authTokenValidityInMins'],
-        CityId: json['cityId'] ?? 1,
+        CountryId: json['countryId'] ?? 1,
         Id: json['id'],
         LanguageId: json['languageId'] ?? 1,
         RefreshToken: json['refreshToken'],

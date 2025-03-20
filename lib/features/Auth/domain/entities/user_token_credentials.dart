@@ -6,7 +6,7 @@ class UserTokenCredentials {
   final String RefreshToken;
   final int RefreshTokenValidityInDays;
   final String? UserImageUrl;
-  final int? CityId;
+  final int? CountryId;
   final int? TimeZoneId;
   final int? LanguageId;
 
@@ -18,7 +18,7 @@ class UserTokenCredentials {
       required this.RefreshToken,
       required this.RefreshTokenValidityInDays,
       required this.UserImageUrl,
-      required this.CityId,
+      required this.CountryId,
       required this.TimeZoneId,
       required this.LanguageId});
 }

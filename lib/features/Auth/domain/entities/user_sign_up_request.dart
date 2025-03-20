@@ -3,7 +3,7 @@ class UserSignUpRequest {
   final String Password;
   final int FirstName;
   final String LastName;
-  final int CityId;
+  final int CountryId;
   final String? TimeZoneId;
   final int? UserImageUrl;
   final int? LanguageId;
@@ -13,7 +13,7 @@ class UserSignUpRequest {
       required this.Password,
       required this.FirstName,
       required this.LastName,
-      required this.CityId,
+      required this.CountryId,
       required this.TimeZoneId,
       required this.UserImageUrl,
       required this.LanguageId});

@@ -9,7 +9,7 @@ class UserSignUpResponseModel extends UserSignUpResponse {
       required super.RefreshToken,
       required super.RefreshTokenValidityInDays,
       required super.UserImageUrl,
-      required super.CityId,
+      required super.CountryId,
       required super.TimeZoneId,
       required super.LanguageId});
 
@@ -22,7 +22,7 @@ class UserSignUpResponseModel extends UserSignUpResponse {
         RefreshToken: json['refreshToken'],
         RefreshTokenValidityInDays: json['refreshTokenValidityInDays'],
         UserImageUrl: json['userImageUrl'],
-        CityId: json['cityId'],
+        CountryId: json['countryId'],
         TimeZoneId: json['timeZoneId'],
         LanguageId: json[' languageId']);
   }

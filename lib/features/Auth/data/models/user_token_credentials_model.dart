@@ -9,7 +9,7 @@ class UserTokenCredentialsModel extends AuthorizedUserResponse {
       required super.RefreshToken,
       required super.RefreshTokenValidityInDays,
       required super.UserImageUrl,
-      required super.CityId,
+      required super.CountryId,
       required super.TimeZoneId,
       required super.LanguageId});
 
@@ -22,7 +22,7 @@ class UserTokenCredentialsModel extends AuthorizedUserResponse {
         RefreshToken: entitie.RefreshToken,
         RefreshTokenValidityInDays: entitie.RefreshTokenValidityInDays,
         UserImageUrl: entitie.UserImageUrl,
-        CityId: entitie.CityId,
+        CountryId: entitie.CountryId,
         TimeZoneId: entitie.TimeZoneId,
         LanguageId: entitie.LanguageId);
   }
@@ -30,7 +30,7 @@ class UserTokenCredentialsModel extends AuthorizedUserResponse {
     return UserTokenCredentialsModel(
         AccessToken: json['accessToken'],
         AuthTokenValidityInMins: json['authTokenValidityInMins'],
-        CityId: json['cityId'],
+        CountryId: json['countryId'],
         Id: json['id'],
         LanguageId: json['languageId'],
         RefreshToken: json['refreshToken'],
@@ -48,7 +48,7 @@ class UserTokenCredentialsModel extends AuthorizedUserResponse {
       "refreshToken": RefreshToken,
       "refreshTokenValidityInDays": RefreshTokenValidityInDays,
       "userImageUrl": UserImageUrl,
-      "cityId": CityId,
+      "countryId": CountryId,
       "timeZoneId": TimeZoneId,
       "languageId": LanguageId
     };

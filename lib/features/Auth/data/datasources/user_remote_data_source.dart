@@ -134,7 +134,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           'password': request.Password,
           'firstName': request.FirstName,
           'lastName': request.LastName,
-          'cityId': request.CityId,
+          'countryId': request.CountryId,
           'timeZoneId': request.TimeZoneId,
           'userImageUrl': request.UserImageUrl,
           'languageId': request.LanguageId,

@@ -6,7 +6,7 @@ class AuthorizedUserResponse {
   final String RefreshToken;
   final int RefreshTokenValidityInDays;
   final String? UserImageUrl;
-  final int? CityId;
+  final int? CountryId;
   final int? TimeZoneId;
   final int? LanguageId;
 
@@ -18,7 +18,7 @@ class AuthorizedUserResponse {
       required this.RefreshToken,
       required this.RefreshTokenValidityInDays,
       required this.UserImageUrl,
-      required this.CityId,
+      required this.CountryId,
       required this.TimeZoneId,
       required this.LanguageId});
 
@@ -31,7 +31,7 @@ class AuthorizedUserResponse {
         RefreshToken: json["refreshToken"],
         RefreshTokenValidityInDays: json["refreshTokenValidityInDays"],
         UserImageUrl: json["userImageUrl"],
-        CityId: json["cityId"],
+        CountryId: json["countryId"],
         TimeZoneId: json["timeZoneId"],
         LanguageId: json["languageId"]);
   }
