@@ -31,7 +31,7 @@ class AuthorizedUserResponseModel extends AuthorizedUserResponse {
     return {
       'AccessToken': AccessToken,
       'AuthTokenValidityInMins': AuthTokenValidityInMins,
-      'CityId': CityId,
+      'CountryId': CountryId,
       'Id': Id,
       'LanguageId': LanguageId,
       'RefreshToken': RefreshToken,

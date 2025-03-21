@@ -2,6 +2,7 @@ import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.da
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:georutasmovil/shared/data/countries.dart';
+import 'package:georutasmovil/shared/data/time_zones.dart';
 import 'package:georutasmovil/theme/theme.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -16,8 +17,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
   String? selectedCountry = "";
-  final countries = ["Nicaragua", "El Salvador", "Panama", "Costa Rica"];
-  final countriesTwo = GetCountries();
+  String? selectedTimeZone = "";
+  final countries = GetCountries();
+  final timeZones = getTimeZones().map((k2, v2) {
+    return v2["text"];
+  });
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -160,7 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
-                          items: countriesTwo.entries
+                          items: countries.entries
                               .map<DropdownMenuItem<String>>((entry) {
                             return DropdownMenuItem<String>(
                               value: entry.value, // Usa el valor del mapa
@@ -171,6 +175,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onChanged: (String? newValue) {
                             setState(() {
                               selectedCountry = newValue;
+                            });
+                          }),
+                      const SizedBox(
+                        height: 25.0,
+                      ),
+                      DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: 'Select TimeZone',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          items: timeZones.entries
+                              .map<DropdownMenuItem<String>>((entry) {
+                            return DropdownMenuItem<String>(
+                              value: entry.value, // Usa el valor del mapa
+                              child: Text(
+                                  entry.value), // Muestra el nombre del país
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedTimeZone = newValue;
                             });
                           }),
                       const SizedBox(
