@@ -1,3 +1,4 @@
+import 'package:georutasmovil/features/Auth/domain/entities/user_sign_up_request.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignInScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
+  TextEditingController _userNameControler = TextEditingController();
+  TextEditingController _passwordControler = TextEditingController();
   bool agreePersonalData = true;
   String? selectedCountry = "";
   String? selectedTimeZone = "";
@@ -96,6 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       // email
                       TextFormField(
+                        controller: _userNameControler,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -127,6 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       // password
                       TextFormField(
+                        controller: _passwordControler,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -238,13 +243,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                            } else if (!agreePersonalData) {
+                                (agreePersonalData || !agreePersonalData)) {
+                              final signUpRequest = UserSignUpRequest(
+                                  Email: _userNameControler.text,
+                                  Password: _passwordControler.text,
+                                  CountryId: 1,
+                                  FirstName: "Nestor",
+                                  LanguageId: 1,
+                                  LastName: "Gonzalez",
+                                  TimeZoneId: 1,
+                                  UserImageUrl: "");
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(
