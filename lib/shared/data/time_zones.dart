@@ -27,3 +27,14 @@ Map<int, dynamic> getTimeZones() {
     25: {"offset": 12, "text": "(UTC+12:00) Pacific/Fiji"},
   };
 }
+
+int? getTimeZoneId(String? text) {
+  Map<int, dynamic> timeZones = getTimeZones();
+
+  return timeZones.entries
+      .firstWhere(
+        (entry) => entry.value["text"] == text,
+        orElse: () => const MapEntry(-1, {}), // Retorna -1 si no se encuentra
+      )
+      .key;
+}
