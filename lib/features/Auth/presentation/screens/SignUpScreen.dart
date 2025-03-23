@@ -16,15 +16,15 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
+  TextEditingController _nameControler = TextEditingController();
   TextEditingController _userNameControler = TextEditingController();
   TextEditingController _passwordControler = TextEditingController();
   bool agreePersonalData = true;
   String? selectedCountry = "";
   String? selectedTimeZone = "";
   final countries = GetCountries();
-  final timeZones = getTimeZones().map((k2, v2) {
-    return v2["text"];
-  });
+  List<String> timeZones =
+      getTimeZones().values.map((e) => e["text"] as String).toList();
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -74,6 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           return null;
                         },
+                        controller: _nameControler,
                         decoration: InputDecoration(
                           label: const Text('Full Name'),
                           hintText: 'Enter Full Name',
@@ -191,12 +192,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
-                          items: timeZones.entries
-                              .map<DropdownMenuItem<String>>((entry) {
+                          isExpanded: true,
+                          items:
+                              timeZones.map<DropdownMenuItem<String>>((entry) {
                             return DropdownMenuItem<String>(
-                              value: entry.value, // Usa el valor del mapa
-                              child: Text(
-                                  entry.value), // Muestra el nombre del país
+                              value: entry, // Usa el valor del mapa
+                              child: Text(entry), // Muestra el nombre del país
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -245,14 +246,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             if (_formSignupKey.currentState!.validate() &&
                                 (agreePersonalData || !agreePersonalData)) {
                               final signUpRequest = UserSignUpRequest(
-                                  Email: _userNameControler.text,
-                                  Password: _passwordControler.text,
-                                  CountryId: 1,
-                                  FirstName: "Nestor",
-                                  LanguageId: 1,
-                                  LastName: "Gonzalez",
-                                  TimeZoneId: 1,
-                                  UserImageUrl: "");
+                                Email: _userNameControler.text,
+                                Password: _passwordControler.text,
+                                CountryId: 1,
+                                FirstName: _nameControler.text.split(' ')[0],
+                                LanguageId: 1,
+                                LastName:
+                                    _nameControler.text.split(' ').length > 1
+                                        ? _nameControler.text.split(' ')[1]
+                                        : "",
+                                TimeZoneId: 1,
+                                UserImageUrl: "",
+                              );
+
+                              print("La mierda que se esta mandando es: " +
+                                  _userNameControler.text +
+                                  ", " +
+                                  _passwordControler.text +
+                                  ", " +
+                                  signUpRequest.FirstName +
+                                  "," +
+                                  signUpRequest.LastName +
+                                  "," +
+                                  getTimeZoneId(selectedTimeZone).toString() +
+                                  "," +
+                                  getCountryId(selectedCountry).toString());
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(

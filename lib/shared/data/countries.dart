@@ -22,3 +22,14 @@ Map<int, String> GetCountries() {
     20: "Dominican Republic",
   };
 }
+
+int? getCountryId(String? text) {
+  Map<int, String> countries = GetCountries();
+
+  return countries.entries
+      .firstWhere(
+        (entry) => entry.value == text,
+        orElse: () => const MapEntry(-1, ""), // Retorna -1 si no se encuentra
+      )
+      .key;
+}
