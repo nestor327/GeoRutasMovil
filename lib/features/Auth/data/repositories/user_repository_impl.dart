@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Auth/data/datasources/user_local_data_source.dart';
 import 'package:georutasmovil/features/Auth/data/models/user_token_credentials_model.dart';

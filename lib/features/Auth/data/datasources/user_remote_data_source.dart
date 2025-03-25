@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -144,9 +145,12 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       if (signUpResponse.statusCode == 200) {
         return Right(UserSignUpResponseModel.fromJson(signUpResponse.data));
       } else {
+        print("El error sucede aqui 2" + signUpResponse.statusCode.toString());
+        // print("El error sucede aqui 3" + signUpResponse.toString());
         return Left(ServerFailure());
       }
     } catch (error) {
+      print("El error sucede aqui 1" + error.toString());
       return Left(LocalFailure());
     }
   }

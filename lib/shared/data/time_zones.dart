@@ -28,7 +28,7 @@ Map<int, dynamic> getTimeZones() {
   };
 }
 
-int? getTimeZoneId(String? text) {
+int getTimeZoneId(String? text) {
   Map<int, dynamic> timeZones = getTimeZones();
 
   return timeZones.entries
