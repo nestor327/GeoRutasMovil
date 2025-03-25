@@ -35,6 +35,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         listener: (context, state) {
           if (state is SignUpSuccess) {
             context.go('/sign-in');
+          } else {
+            print("El state es: ");
+            print(state);
           }
         },
         child: Column(
@@ -254,18 +257,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formSignupKey.currentState!.validate() &&
-                                  (agreePersonalData || !agreePersonalData)) {
+                                  (agreePersonalData || !agreePersonalData) &&
+                                  _userNameControler.text.length > 0 &&
+                                  _passwordControler.text.length > 0 &&
+                                  getCountryId(selectedCountry) > 0 &&
+                                  _nameControler.text.length > 0 &&
+                                  getTimeZoneId(selectedTimeZone) > 0) {
                                 final signUpRequest = UserSignUpRequest(
                                   Email: _userNameControler.text,
                                   Password: _passwordControler.text,
-                                  CountryId: 1,
+                                  CountryId: getCountryId(selectedCountry),
                                   FirstName: _nameControler.text.split(' ')[0],
                                   LanguageId: 1,
                                   LastName:
                                       _nameControler.text.split(' ').length > 1
                                           ? _nameControler.text.split(' ')[1]
                                           : "",
-                                  TimeZoneId: 1,
+                                  TimeZoneId: getTimeZoneId(selectedTimeZone),
                                   UserImageUrl: "",
                                 );
 
@@ -273,8 +281,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     signUpRequest: signUpRequest));
 
                                 print("La mierda que se esta mandando es: " +
+                                    _nameControler.text +
+                                    "," +
                                     _userNameControler.text +
                                     ", " +
+                                    _nameControler.text +
+                                    "," +
                                     _passwordControler.text +
                                     ", " +
                                     signUpRequest.FirstName +

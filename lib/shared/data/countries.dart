@@ -23,7 +23,7 @@ Map<int, String> GetCountries() {
   };
 }
 
-int? getCountryId(String? text) {
+int getCountryId(String? text) {
   Map<int, String> countries = GetCountries();
 
   return countries.entries
