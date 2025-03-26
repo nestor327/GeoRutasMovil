@@ -142,6 +142,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         },
       );
 
+      print("El error sucede despues de este punto" +
+          signUpResponse.statusCode.toString());
+
       if (signUpResponse.statusCode == 200) {
         return Right(UserSignUpResponseModel.fromJson(signUpResponse.data));
       } else {
