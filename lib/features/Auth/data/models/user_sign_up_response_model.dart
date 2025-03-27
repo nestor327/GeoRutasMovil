@@ -22,8 +22,8 @@ class UserSignUpResponseModel extends UserSignUpResponse {
         RefreshToken: json['refreshToken'],
         RefreshTokenValidityInDays: json['refreshTokenValidityInDays'],
         UserImageUrl: json['userImageUrl'],
-        CountryId: json['countryId'],
-        TimeZoneId: json['timeZoneId'],
-        LanguageId: json[' languageId']);
+        CountryId: json['countryId'] ?? 1,
+        TimeZoneId: json['timeZoneId'] ?? 1,
+        LanguageId: json[' languageId'] ?? 1);
   }
 }
