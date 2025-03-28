@@ -1,10 +1,11 @@
 class UserSignUpResponse {
   final String Id;
   final String UserName;
-  final String AccessToken;
-  final int AuthTokenValidityInMins;
-  final String RefreshToken;
-  final int RefreshTokenValidityInDays;
+  final String FirstName;
+  final String LastName;
+  final String Email;
+  final bool IsActive;
+  final DateTime Registered;
   final String? UserImageUrl;
   final int? CountryId;
   final int? TimeZoneId;
@@ -13,10 +14,11 @@ class UserSignUpResponse {
   UserSignUpResponse(
       {required this.Id,
       required this.UserName,
-      required this.AccessToken,
-      required this.AuthTokenValidityInMins,
-      required this.RefreshToken,
-      required this.RefreshTokenValidityInDays,
+      required this.FirstName,
+      required this.LastName,
+      required this.Email,
+      required this.IsActive,
+      required this.Registered,
       required this.UserImageUrl,
       required this.CountryId,
       required this.TimeZoneId,
