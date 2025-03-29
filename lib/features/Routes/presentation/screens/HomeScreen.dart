@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Ciudad Dario"),
+        title: const Text("Ciudad"),
       ),
       body: const GoogleMap(
           initialCameraPosition:

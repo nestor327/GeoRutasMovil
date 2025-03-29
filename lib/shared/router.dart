@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 GoRouter RouterLocalConfig({required bool isAutenticated}) {
   return GoRouter(
-      initialLocation: (isAutenticated) ? "/welcome" : "/welcome",
+      initialLocation: (isAutenticated) ? "/home" : "/welcome",
       errorBuilder: (contex, state) {
         return Scaffold(
           appBar: AppBar(title: const Text("Error")),
