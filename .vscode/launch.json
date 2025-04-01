@@ -1,0 +1,51 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "GeoRutasMovil",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "GeoRutasMovil (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "GeoRutasMovil (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Development",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
+            "name": "Stagin",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--dart-define-from-file=.env/stg.json"
+            ]
+        },
+        {
+            "name": "Production",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--dart-define-from-file=.env/prod.json"
+            ]
+        }
+
+    ]
+}
