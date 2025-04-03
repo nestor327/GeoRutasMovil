@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
@@ -52,9 +54,10 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       );
 
       if (resp.statusCode == 200) {
-        final BusTypeModel user = BusTypeModel.fromJson(resp.data);
-
-        return Right(user);
+        dynamic jsonParse = json.decode(resp.data);
+        final List<BusTypeModel> busTypeModels =
+            BusTypeModel.parseEntidades(jsonParse);
+        return Right(busTypeModels);
       } else {
         return Left(ServerFailure());
       }
