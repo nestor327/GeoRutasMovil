@@ -9,7 +9,7 @@ abstract class GeoRutasApiDataSource {
   Future<Either<Failure, List<BusTypeModel>>> GetBusesByType();
   Future<Either<Failure, int>> GetBusesByName();
   Future<Either<Failure, int>> GetBusesByLocation();
-  Future<Either<Failure, int>> GetBusTypes();
+  Future<Either<Failure, List<BusTypeModel>>> GetBusTypes();
   Future<Either<Failure, int>> GetCoordinateRouteByScheduleId();
   Future<Either<Failure, int>> GetCoordinatesBetweenStops();
   Future<Either<Failure, int>> GetScheduleByBusIdAndWeekDayAndTime();
@@ -22,9 +22,30 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   final Dio dio = Dio();
 
   @override
-  Future<Either<Failure, int>> GetBusTypes() {
-    // TODO: implement GetBusTypes
-    throw UnimplementedError();
+  Future<Either<Failure, List<BusTypeModel>>> GetBusTypes() async {
+    try {
+      final resp = await dio.post(
+        'http://192.168.1.14:5000/v1/auth/login',
+        options: Options(
+          headers: {
+            'accept': 'text/plain',
+            'X-Language': 'es',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (resp.statusCode == 200) {
+        dynamic jsonParse = json.decode(resp.data);
+        final List<BusTypeModel> busTypeModels =
+            BusTypeModel.parseEntidades(jsonParse);
+        return Right(busTypeModels);
+      } else {
+        return Left(ServerFailure());
+      }
+    } catch (Error) {
+      return Left(LocalFailure());
+    }
   }
 
   @override
