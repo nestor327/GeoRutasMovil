@@ -17,7 +17,7 @@ class BusTypeModel extends BusType {
       // Si es un solo objeto, lo convertimos en una lista con un solo elemento
       return [BusTypeModel.fromJson(jsonData)];
     } else {
-      throw Exception("Formato de JSON no reconocido");
+      return [];
     }
   }
 }

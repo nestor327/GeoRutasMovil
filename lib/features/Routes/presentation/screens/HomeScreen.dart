@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
