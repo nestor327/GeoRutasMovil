@@ -8,7 +8,7 @@ class GetCoordinatesBetweenTwoBusStopsUseCase {
 
   GetCoordinatesBetweenTwoBusStopsUseCase({required this.repository});
 
-  Future<Either<Failure, List<Coordinate>>> call(
+  Future<Either<Failure, List<CoordinateLocal>>> call(
       int firstBusStopId, double secondBusStopId) {
     //Se ejecuta inmediatamente luego de realizar la instancia de la clase.
 

@@ -11,13 +11,14 @@ class CoordinateRepositoryImpl implements CoordinateRepository {
   CoordinateRepositoryImpl({required this.dataSource});
 
   @override
-  Future<Either<Failure, List<Coordinate>>> getCoordinatesBetweenTwoBusStops(
-      int firstBusStopId, double secondBusStopId) async {
+  Future<Either<Failure, List<CoordinateLocal>>>
+      getCoordinatesBetweenTwoBusStops(
+          int firstBusStopId, double secondBusStopId) async {
     try {
-      final List<Coordinate> coordinates =
+      final List<CoordinateLocal> coordinates =
           (await dataSource.getCoordinatesBetweenTwoBusStops(
                   firstBusStopId, secondBusStopId))
-              .cast<Coordinate>();
+              .cast<CoordinateLocal>();
       return Right(coordinates);
     } on LocalFailure {
       return Left(LocalFailure());
@@ -29,16 +30,16 @@ class CoordinateRepositoryImpl implements CoordinateRepository {
   }
 
   @override
-  Future<Either<Failure, List<Coordinate>>> getCoordinatesBetweenTwoPoints(
+  Future<Either<Failure, List<CoordinateLocal>>> getCoordinatesBetweenTwoPoints(
       double firstLatitude,
       double secondLatitude,
       double firstLongitude,
       double secondLongitude) async {
     try {
-      final List<Coordinate> coordinates =
+      final List<CoordinateLocal> coordinates =
           (await dataSource.getCoordinatesBetweenTwoPoints(firstLatitude,
                   secondLatitude, firstLongitude, secondLongitude))
-              .cast<Coordinate>();
+              .cast<CoordinateLocal>();
       return Right(coordinates);
     } on LocalFailure {
       return Left(LocalFailure());

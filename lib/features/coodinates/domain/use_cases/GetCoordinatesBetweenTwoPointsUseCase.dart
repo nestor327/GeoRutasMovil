@@ -8,7 +8,7 @@ class GetCoordinatesBetweenTwoPointsUseCase {
 
   GetCoordinatesBetweenTwoPointsUseCase({required this.repository});
 
-  Future<Either<Failure, List<Coordinate>>> call(double firstLatitude,
+  Future<Either<Failure, List<CoordinateLocal>>> call(double firstLatitude,
       double secondLatitude, double firstLongitude, double secondLongitude) {
     //Se ejecuta inmediatamente luego de realizar la instancia de la clase.
     return repository.getCoordinatesBetweenTwoPoints(
