@@ -1,6 +1,6 @@
 import 'package:georutasmovil/features/coodinates/domain/entities/coordinate.dart';
 
-class CoordinateModel extends Coordinate {
+class CoordinateModel extends CoordinateLocal {
   CoordinateModel(
       {required super.coordinate_id,
       required super.longitude,

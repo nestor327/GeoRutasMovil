@@ -6,7 +6,7 @@ import 'package:georutasmovil/features/coodinates/presentation/bloc/getCoordinat
 import 'package:georutasmovil/features/coodinates/presentation/bloc/getCoordinates/GetCoordinatesState.dart';
 
 class GetCoordinatesBloc
-    extends Bloc<GetCoordinatesEvent, GetCoordinatesState> {
+    extends Bloc<GetCoordinatesEvent, GetCoordinateLocalsState> {
   final GetCoordinatesBetweenTwoBusStopsUseCase
       _getCoordinatesBetweenTwoBusStopsUseCase;
   final GetCoordinatesBetweenTwoPointsUseCase
@@ -14,19 +14,21 @@ class GetCoordinatesBloc
 
   GetCoordinatesBloc(this._getCoordinatesBetweenTwoBusStopsUseCase,
       this._getCoordinatesBetweenTwoPointsUseCase)
-      : super(GetcoordinatesInitial()) {
+      : super(GetCoordinateLocalsInitial()) {
     on<OnGetCoordinatesBetweenTwoBusStops>((event, emit) async {
-      emit(GetcoordinatesLoading());
+      emit(GetCoordinateLocalsLoading());
 
       final resp = await _getCoordinatesBetweenTwoBusStopsUseCase(
           event.firstBusStopId, event.secondBusStopId);
 
-      resp.fold((f) => emit(GetCoordinatesFailure(failure: LocalFailure())),
-          (p) => emit(GetCoordinatesBetweenTwoBusStopsState(list: p.cast())));
+      resp.fold(
+          (f) => emit(GetCoordinateLocalsFailure(failure: LocalFailure())),
+          (p) =>
+              emit(GetCoordinateLocalsBetweenTwoBusStopsState(list: p.cast())));
     });
 
     on<OnGetCoordinatesBetweenTwoPoints>((event, emit) async {
-      emit(GetcoordinatesLoading());
+      emit(GetCoordinateLocalsLoading());
 
       final resp = await _getCoordinatesBetweenTwoPointsUseCase(
           event.firstLatitude,
@@ -34,8 +36,10 @@ class GetCoordinatesBloc
           event.firstLongitude,
           event.secondLongitude);
 
-      resp.fold((f) => emit(GetCoordinatesFailure(failure: LocalFailure())),
-          (p) => emit(GetCoordinatesBetweenTwoPointsState(list: p.cast())));
+      resp.fold(
+          (f) => emit(GetCoordinateLocalsFailure(failure: LocalFailure())),
+          (p) =>
+              emit(GetCoordinateLocalsBetweenTwoPointsState(list: p.cast())));
     });
   }
 }
