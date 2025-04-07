@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
-import 'package:georutasmovil/features/Routes/data/models/stop_model.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus_type.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
@@ -12,7 +11,10 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_coordinates_be
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_range_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_schedule_id_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_trips_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/schedule.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/stop.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/trip_paginated.dart';
 
 abstract class GeoRutasRepository {
   Future<Either<Failure, List<Bus>>> GetBusesByType(
@@ -28,8 +30,10 @@ abstract class GeoRutasRepository {
       GetCoordinatesBetweenStopsRequest request);
   Future<Either<Failure, List<Schedule>>> GetScheduleByBusIdAndWeekDayAndTime(
       GetScheduleByBusIdWeekDayAndHourRequest request);
-  Future<Either<Failure, List<StopModel>>> GetStopsByRange(
+  Future<Either<Failure, List<Stop>>> GetStopsByRange(
       GetStopByRangeRequest request);
-  Future<Either<Failure, List<StopModel>>> GetStopsByScheduleId(
+  Future<Either<Failure, List<Stop>>> GetStopsByScheduleId(
       GetStopByScheduleIdRequest request);
+  Future<Either<Failure, TripPaginated>> GetTripsByLocation(
+      GetTripsByLocationRequest request);
 }

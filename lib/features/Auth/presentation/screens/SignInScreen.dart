@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/features/Auth/domain/entities/user_sign_in_request.dart';
-import 'package:georutasmovil/features/Auth/presentation/bloc/User/user_bloc.dart';
+import 'package:georutasmovil/features/Auth/presentation/bloc/user/user_bloc.dart';
 import 'package:georutasmovil/features/Auth/presentation/screens/SignUpScreen.dart';
 import 'package:georutasmovil/features/Auth/presentation/widgets/CustomScaffold.dart';
 import 'package:georutasmovil/theme/theme.dart';

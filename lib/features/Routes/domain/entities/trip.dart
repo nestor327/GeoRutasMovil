@@ -2,19 +2,19 @@ class Trip {
   final int Id;
   final int TotalWaitingTime;
   final int TotalTravelTime;
-  final List<TripData> trips;
+  final List<TripData> Trips;
 
   Trip(
       {required this.Id,
       required this.TotalWaitingTime,
       required this.TotalTravelTime,
-      required this.trips});
+      required this.Trips});
 }
 
 class TripData {
   final int Id;
   final int TripId;
-  final int scheduleId;
+  final int ScheduleId;
   final int BusId;
   final int BusTypeId;
   final int FromStopId;
@@ -29,7 +29,7 @@ class TripData {
   TripData(
       {required this.Id,
       required this.TripId,
-      required this.scheduleId,
+      required this.ScheduleId,
       required this.BusId,
       required this.BusTypeId,
       required this.FromStopId,

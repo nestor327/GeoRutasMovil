@@ -5,7 +5,8 @@ import 'package:georutasmovil/features/Auth/data/datasources/user_remote_data_so
 import 'package:georutasmovil/features/Auth/data/models/user_token_credentials_model.dart';
 import 'package:georutasmovil/features/Auth/data/repositories/user_repository_impl.dart';
 import 'package:georutasmovil/features/Auth/domain/entities/Refresh_token_request.dart';
-import 'package:georutasmovil/features/Auth/presentation/bloc/User/user_bloc.dart';
+import 'package:georutasmovil/features/Auth/presentation/bloc/user/user_bloc.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/coodinates/presentation/bloc/getCoordinates/GetCoordinatesBloc.dart';
 import 'package:georutasmovil/shared/router.dart';
 import 'package:georutasmovil/theme/theme.dart';
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => GetIt.instance<GetCoordinatesBloc>()),
-        BlocProvider(create: (_) => GetIt.instance<UserBloc>())
+        BlocProvider(create: (_) => GetIt.instance<UserBloc>()),
+        BlocProvider(create: (_) => GetIt.instance<RouteBloc>())
       ],
       child: MaterialApp.router(
         title: 'Flutter Demo',
