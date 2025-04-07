@@ -4,10 +4,10 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_schedu
 import 'package:georutasmovil/features/Routes/domain/entities/stop.dart';
 import 'package:georutasmovil/features/Routes/domain/repositories/georutas_repository.dart';
 
-class GetStopsByScheduleId {
+class GetStopsByScheduleIdUseCase {
   final GeoRutasRepository geoRutasRepository;
 
-  GetStopsByScheduleId({required this.geoRutasRepository});
+  GetStopsByScheduleIdUseCase({required this.geoRutasRepository});
 
   Future<Either<Failure, List<Stop>>> call(
       GetStopByScheduleIdRequest request) async {

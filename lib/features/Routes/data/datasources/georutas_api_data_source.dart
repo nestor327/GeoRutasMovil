@@ -8,6 +8,7 @@ import 'package:georutasmovil/features/Routes/data/models/bus_type_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/coordinate_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/schedule_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/stop_model.dart';
+import 'package:georutasmovil/features/Routes/data/models/trip_paginated_model.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_name_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
@@ -16,6 +17,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_coordinates_be
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_range_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_schedule_id_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_trips_by_location_request.dart';
 
 abstract class GeoRutasApiDataSource {
   Future<Either<Failure, List<BusModel>>> GetBusesByType(
@@ -36,7 +38,8 @@ abstract class GeoRutasApiDataSource {
       GetStopByRangeRequest request);
   Future<Either<Failure, List<StopModel>>> GetStopsByScheduleId(
       GetStopByScheduleIdRequest request);
-  Future<Either<Failure, int>> GetTripsByLocation();
+  Future<Either<Failure, TripPaginatedModel>> GetTripsByLocation(
+      GetTripsByLocationRequest request);
 }
 
 class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
@@ -292,8 +295,30 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   }
 
   @override
-  Future<Either<Failure, int>> GetTripsByLocation() {
-    // TODO: implement GetTripsByLocation
-    throw UnimplementedError();
+  Future<Either<Failure, TripPaginatedModel>> GetTripsByLocation(
+      GetTripsByLocationRequest request) async {
+    try {
+      final resp = await dio.post(
+        'http://192.168.1.14:5000/v1/auth/login',
+        options: Options(
+          headers: {
+            'accept': 'text/plain',
+            'X-Language': 'es',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (resp.statusCode == 200) {
+        dynamic jsonParse = json.decode(resp.data);
+        final TripPaginatedModel coordinatesModels =
+            TripPaginatedModel.fromJson(jsonParse);
+        return Right(coordinatesModels);
+      } else {
+        return Left(ServerFailure());
+      }
+    } catch (Error) {
+      return Left(LocalFailure());
+    }
   }
 }
