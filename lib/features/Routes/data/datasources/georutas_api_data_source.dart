@@ -18,6 +18,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bu
 import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_range_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_schedule_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_trips_by_location_request.dart';
+import 'package:georutasmovil/shared/utils/env.dart';
 
 abstract class GeoRutasApiDataSource {
   Future<Either<Failure, List<BusModel>>> GetBusesByType(
@@ -131,12 +132,13 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       GetBusesByTypeRequest request) async {
     try {
       final resp = await dio.post(
-        'http://192.168.1.14:5000/v1/auth/login',
+        'http://localhost:5000/v1/bus/buses-by-bustype?busTypeId=${request.BusTypeId}',
         options: Options(
           headers: {
             'accept': 'text/plain',
             'X-Language': 'es',
             'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
           },
         ),
       );
