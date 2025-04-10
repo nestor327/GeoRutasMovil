@@ -131,8 +131,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   Future<Either<Failure, List<BusModel>>> GetBusesByType(
       GetBusesByTypeRequest request) async {
     try {
-      final resp = await dio.post(
-        'http://localhost:5000/v1/bus/buses-by-bustype?busTypeId=${request.BusTypeId}',
+      final resp = await dio.get(
+        'http://192.168.1.14:5000/v1/bus/buses-by-bustype?busTypeId=${request.BusTypeId}',
         options: Options(
           headers: {
             'accept': 'text/plain',
@@ -151,6 +151,7 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
         return Left(ServerFailure());
       }
     } catch (Error) {
+      print("El error fue: " + Error.toString());
       return Left(LocalFailure());
     }
   }

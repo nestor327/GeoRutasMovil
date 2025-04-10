@@ -2,7 +2,7 @@ part of 'route_bloc.dart';
 
 sealed class RouteState extends Equatable {
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 final class RouteInitial extends RouteState {}

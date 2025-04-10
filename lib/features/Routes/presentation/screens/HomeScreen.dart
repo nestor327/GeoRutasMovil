@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showBusMenu(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    bool _showList = false;
+    bool _showList = true;
 
     showGeneralDialog(
       context: context,
@@ -55,7 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         if (_showList)
-                          BlocBuilder(builder: (context, state) {
+                          BlocBuilder<RouteBloc, RouteState>(
+                              builder: (context, state) {
                             if (state is GetBusTypesLoading) {
                               return Text("Loading");
                             } else if (state is GetBusTypesSuccess) {
