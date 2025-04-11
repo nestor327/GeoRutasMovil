@@ -50,31 +50,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         bottom: 0, left: 10, right: 10, top: 0),
                     child: Column(
                       children: [
-                        const Text("Opciones",
+                        const Text("Buses",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         if (_showList)
                           BlocBuilder<RouteBloc, RouteState>(
                               builder: (context, state) {
-                            if (state is GetBusTypesLoading) {
-                              return Text("Loading");
-                            } else if (state is GetBusTypesSuccess) {
+                            if (state is GetBusesByTypeSuccess) {
                               return Expanded(
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
-                                  itemCount: 9,
+                                  itemCount: state.response.length,
                                   itemBuilder: (context, index) {
                                     return ElevatedButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                          "Succes ${state.response[index].Name}"),
+                                      onPressed: () {
+                                        int weekDay = DateTime.now().weekday;
+                                        print(
+                                            "El dia encontrado fue :${weekDay}");
+                                        print(
+                                            "La fecha fue :${TimeOfDay.now().format(context)}");
+                                        print(
+                                            "La fecha fue :${DateTime.now().timeZoneOffset.toString()}");
+                                        print(
+                                            "El id del bus fue :${state.response[index].Id}");
+                                      },
+                                      child: Text(state.response[index].Name),
                                     );
                                   },
                                 ),
                               );
                             } else {
-                              return Text("Fali");
+                              return Text("Fali " + state.toString());
                             }
                           }),
                       ],

@@ -132,7 +132,7 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       GetBusesByTypeRequest request) async {
     try {
       final resp = await dio.get(
-        'http://192.168.1.14:5000/v1/bus/buses-by-bustype?busTypeId=${request.BusTypeId}',
+        'http://192.168.1.14:5005/v1/bus/buses-by-bustype?busTypeId=${request.BusTypeId}',
         options: Options(
           headers: {
             'accept': 'text/plain',
@@ -144,8 +144,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       );
 
       if (resp.statusCode == 200) {
-        dynamic jsonParse = json.decode(resp.data);
-        final List<BusModel> busTypeModels = BusModel.parseEntidades(jsonParse);
+        final List<BusModel> busTypeModels = BusModel.parseEntidades(resp.data);
+
         return Right(busTypeModels);
       } else {
         return Left(ServerFailure());
@@ -172,9 +172,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       );
 
       if (resp.statusCode == 200) {
-        dynamic jsonParse = json.decode(resp.data);
         final List<CoordinateModel> coordinatesModels =
-            CoordinateModel.parseEntidades(jsonParse);
+            CoordinateModel.parseEntidades(resp.data);
         return Right(coordinatesModels);
       } else {
         return Left(ServerFailure());

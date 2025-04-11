@@ -1,7 +1,7 @@
 class Bus {
-  final String Id;
+  final int Id;
   final String Name;
-  final String Frecuency;
+  final int Frecuency;
   final bool IsActive;
   final int BusTypeId;
 
