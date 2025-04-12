@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -29,6 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
           listener: (context, state) {
             if (state is GetBusTypesSuccess) {
               _showList = true;
+            } else {
+              _showList = false;
+            }
+
+            if (state is GetScheduleByBusIdAndWeekDayAndTimeSuccess) {
+              print("Intentando realizar el llamado a las coordenadas");
             }
           },
           child: Stack(
@@ -50,31 +57,49 @@ class _HomeScreenState extends State<HomeScreen> {
                         bottom: 0, left: 10, right: 10, top: 0),
                     child: Column(
                       children: [
-                        const Text("Opciones",
+                        const Text("Buses",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         if (_showList)
                           BlocBuilder<RouteBloc, RouteState>(
                               builder: (context, state) {
-                            if (state is GetBusTypesLoading) {
-                              return Text("Loading");
-                            } else if (state is GetBusTypesSuccess) {
+                            if (state is GetBusesByTypeSuccess) {
                               return Expanded(
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
-                                  itemCount: 9,
+                                  itemCount: state.response.length,
                                   itemBuilder: (context, index) {
                                     return ElevatedButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                          "Succes ${state.response[index].Name}"),
+                                      onPressed: () {
+                                        int weekDay = DateTime.now().weekday;
+                                        print(
+                                            "El dia encontrado fue :${weekDay}");
+                                        print(
+                                            "La fecha fue :${TimeOfDay.now().format(context)}");
+                                        print(
+                                            "La fecha fue :${DateTime.now().timeZoneOffset.toString()}");
+                                        print(
+                                            "El id del bus fue :${state.response[index].Id}");
+
+                                        GetScheduleByBusIdWeekDayAndHourRequest
+                                            request =
+                                            GetScheduleByBusIdWeekDayAndHourRequest(
+                                                BusId: state.response[index].Id,
+                                                Time: TimeOfDay.now(),
+                                                WeekDayId: weekDay);
+
+                                        context.read<RouteBloc>().add(
+                                            GetScheduleByBusIdAndWeekDayAndTimeEvent(
+                                                request: request));
+                                      },
+                                      child: Text(state.response[index].Name),
                                     );
                                   },
                                 ),
                               );
                             } else {
-                              return Text("Fali");
+                              return Text("Fali " + state.toString());
                             }
                           }),
                       ],
