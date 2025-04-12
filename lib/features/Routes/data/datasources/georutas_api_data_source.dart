@@ -216,13 +216,15 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       GetScheduleByBusIdAndWeekDayAndTime(
           GetScheduleByBusIdWeekDayAndHourRequest request) async {
     try {
-      final resp = await dio.post(
-        'http://192.168.1.14:5000/v1/auth/login',
+      final resp = await dio.get(
+        'http://192.168.1.14:5005/v1/schedules-by-bus-week-day-time?busId=${request.BusId}' +
+            '&weekDayId=${request.WeekDayId}&time=9:${request.Time.minute}',
         options: Options(
           headers: {
             'accept': 'text/plain',
             'X-Language': 'es',
             'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
           },
         ),
       );

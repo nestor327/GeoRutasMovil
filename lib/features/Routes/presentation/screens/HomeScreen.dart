@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -29,6 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
           listener: (context, state) {
             if (state is GetBusTypesSuccess) {
               _showList = true;
+            } else {
+              _showList = false;
+            }
+
+            if (state is GetScheduleByBusIdAndWeekDayAndTimeSuccess) {
+              print("Intentando realizar el llamado a las coordenadas");
             }
           },
           child: Stack(
@@ -74,6 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                             "La fecha fue :${DateTime.now().timeZoneOffset.toString()}");
                                         print(
                                             "El id del bus fue :${state.response[index].Id}");
+
+                                        GetScheduleByBusIdWeekDayAndHourRequest
+                                            request =
+                                            GetScheduleByBusIdWeekDayAndHourRequest(
+                                                BusId: state.response[index].Id,
+                                                Time: TimeOfDay.now(),
+                                                WeekDayId: weekDay);
+
+                                        context.read<RouteBloc>().add(
+                                            GetScheduleByBusIdAndWeekDayAndTimeEvent(
+                                                request: request));
                                       },
                                       child: Text(state.response[index].Name),
                                     );
