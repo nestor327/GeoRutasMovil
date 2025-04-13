@@ -161,12 +161,13 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       GetCoordinateRoutesByScheduleIdRequest request) async {
     try {
       final resp = await dio.post(
-        'http://192.168.1.14:5000/v1/auth/login',
+        'http://192.168.1.14:5005/v1/coordinate-route-schedule?scheduleId=${request.ScheduleId}',
         options: Options(
           headers: {
             'accept': 'text/plain',
             'X-Language': 'es',
             'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
           },
         ),
       );
@@ -230,9 +231,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       );
 
       if (resp.statusCode == 200) {
-        dynamic jsonParse = json.decode(resp.data);
         final List<ScheduleModel> coordinatesModels =
-            ScheduleModel.parseEntidades(jsonParse);
+            ScheduleModel.parseEntidades(resp.data);
         return Right(coordinatesModels);
       } else {
         return Left(ServerFailure());
