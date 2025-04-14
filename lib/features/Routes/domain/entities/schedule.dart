@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 class Schedule {
   final int Id;
   final String Alias;
   final String Name;
-  final DateTime DepartureTime;
-  final DateTime ArrivalTime;
+  final TimeOfDay DepartureTime;
+  final TimeOfDay ArrivalTime;
   final double Duration;
   final double OrigenLatitude;
   final double OrigenLogitude;

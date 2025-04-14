@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/material.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/schedule.dart';
 
 class ScheduleModel extends Schedule {
@@ -16,13 +19,21 @@ class ScheduleModel extends Schedule {
       required super.BusId});
 
   factory ScheduleModel.fromJson(json) {
+    TimeOfDay stringToTimeOfDay(String timeString) {
+      final parts = timeString.split(':');
+      return TimeOfDay(
+        hour: int.parse(parts[0]),
+        minute: int.parse(parts[1]),
+      );
+    }
+
     return ScheduleModel(
         Id: json["id"],
         Alias: json["alias"],
         Name: json["name"],
-        DepartureTime: json["departureTime"],
-        ArrivalTime: json["arrivalTime"],
-        Duration: json["duration"],
+        DepartureTime: stringToTimeOfDay(json["departureTime"]),
+        ArrivalTime: stringToTimeOfDay(json["arrivalTime"]),
+        Duration: double.parse(json["duration"].toString()),
         OrigenLatitude: json["origenLatitude"],
         OrigenLogitude: json["origenLogitude"],
         DestinoLatitude: json["destinoLatitude"],

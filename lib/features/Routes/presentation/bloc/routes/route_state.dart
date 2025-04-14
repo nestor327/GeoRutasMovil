@@ -106,7 +106,7 @@ final class GetCoordinatesBetweenStopsFailure extends RouteState {
 final class GetScheduleByBusIdAndWeekDayAndTimeLoading extends RouteState {}
 
 final class GetScheduleByBusIdAndWeekDayAndTimeSuccess extends RouteState {
-  final List<Schedule> response;
+  final Schedule response;
   GetScheduleByBusIdAndWeekDayAndTimeSuccess({required this.response});
   @override
   List<Object> get props => [response];

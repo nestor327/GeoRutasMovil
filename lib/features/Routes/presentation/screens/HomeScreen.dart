@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_routes_by_schedule_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -47,6 +48,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
               if (state is GetScheduleByBusIdAndWeekDayAndTimeSuccess) {
                 print("Intentando realizar el llamado a las coordenadas");
+
+                GetCoordinateRoutesByScheduleIdRequest request =
+                    GetCoordinateRoutesByScheduleIdRequest(
+                        ScheduleId: state.response.Id);
+
+                context
+                    .read<RouteBloc>()
+                    .add(GetCoordinateRouteByScheduleIdEvent(request: request));
+              }
+
+              if (state is GetCoordinateRouteByScheduleIdSuccess) {
                 Navigator.of(context).pop();
               }
             },
@@ -129,8 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: BlocListener<RouteBloc, RouteState>(
         listener: (context, state) {
-          if (state is GetBusesByTypeFailure) {
+          if (state is GetCoordinateRouteByScheduleIdSuccess) {
             //TODO
+            print("Al final de todo entro aqui ${state.response.length}");
           }
         },
         child: Scaffold(

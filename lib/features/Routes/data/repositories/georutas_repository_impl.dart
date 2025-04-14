@@ -103,7 +103,7 @@ class GeorutasRepositoryImpl implements GeoRutasRepository {
   }
 
   @override
-  Future<Either<Failure, List<Schedule>>> GetScheduleByBusIdAndWeekDayAndTime(
+  Future<Either<Failure, Schedule>> GetScheduleByBusIdAndWeekDayAndTime(
       GetScheduleByBusIdWeekDayAndHourRequest request) async {
     try {
       final response =
