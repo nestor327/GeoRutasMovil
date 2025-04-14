@@ -10,7 +10,7 @@ class GetScheduleByBusIdAndWeekDayAndTimeUseCase {
   GetScheduleByBusIdAndWeekDayAndTimeUseCase(
       {required this.geoRutasRepository});
 
-  Future<Either<Failure, List<Schedule>>> call(
+  Future<Either<Failure, Schedule>> call(
       GetScheduleByBusIdWeekDayAndHourRequest request) async {
     return geoRutasRepository.GetScheduleByBusIdAndWeekDayAndTime(request);
   }

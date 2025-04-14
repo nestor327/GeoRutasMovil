@@ -32,9 +32,8 @@ abstract class GeoRutasApiDataSource {
       GetCoordinateRoutesByScheduleIdRequest request);
   Future<Either<Failure, List<CoordinateModel>>> GetCoordinatesBetweenStops(
       GetCoordinatesBetweenStopsRequest request);
-  Future<Either<Failure, List<ScheduleModel>>>
-      GetScheduleByBusIdAndWeekDayAndTime(
-          GetScheduleByBusIdWeekDayAndHourRequest request);
+  Future<Either<Failure, ScheduleModel>> GetScheduleByBusIdAndWeekDayAndTime(
+      GetScheduleByBusIdWeekDayAndHourRequest request);
   Future<Either<Failure, List<StopModel>>> GetStopsByRange(
       GetStopByRangeRequest request);
   Future<Either<Failure, List<StopModel>>> GetStopsByScheduleId(
@@ -160,7 +159,7 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   Future<Either<Failure, List<CoordinateModel>>> GetCoordinateRouteByScheduleId(
       GetCoordinateRoutesByScheduleIdRequest request) async {
     try {
-      final resp = await dio.post(
+      final resp = await dio.get(
         'http://192.168.1.14:5005/v1/coordinate-route-schedule?scheduleId=${request.ScheduleId}',
         options: Options(
           headers: {
@@ -213,9 +212,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   }
 
   @override
-  Future<Either<Failure, List<ScheduleModel>>>
-      GetScheduleByBusIdAndWeekDayAndTime(
-          GetScheduleByBusIdWeekDayAndHourRequest request) async {
+  Future<Either<Failure, ScheduleModel>> GetScheduleByBusIdAndWeekDayAndTime(
+      GetScheduleByBusIdWeekDayAndHourRequest request) async {
     try {
       final resp = await dio.get(
         'http://192.168.1.14:5005/v1/schedules-by-bus-week-day-time?busId=${request.BusId}' +
@@ -231,8 +229,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       );
 
       if (resp.statusCode == 200) {
-        final List<ScheduleModel> coordinatesModels =
-            ScheduleModel.parseEntidades(resp.data);
+        final ScheduleModel coordinatesModels =
+            ScheduleModel.fromJson(resp.data);
         return Right(coordinatesModels);
       } else {
         return Left(ServerFailure());

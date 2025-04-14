@@ -28,7 +28,7 @@ abstract class GeoRutasRepository {
       GetCoordinateRoutesByScheduleIdRequest request);
   Future<Either<Failure, List<Coordinate>>> GetCoordinatesBetweenStops(
       GetCoordinatesBetweenStopsRequest request);
-  Future<Either<Failure, List<Schedule>>> GetScheduleByBusIdAndWeekDayAndTime(
+  Future<Either<Failure, Schedule>> GetScheduleByBusIdAndWeekDayAndTime(
       GetScheduleByBusIdWeekDayAndHourRequest request);
   Future<Either<Failure, List<Stop>>> GetStopsByRange(
       GetStopByRangeRequest request);
