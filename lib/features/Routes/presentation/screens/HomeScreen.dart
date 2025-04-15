@@ -138,12 +138,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var _showCoordinates = false;
+
+    List<LatLng> _polylineCoordinates = [
+      // LatLng(37.42796133580664, -122.085749655962),
+      // LatLng(37.42866133580664, -122.088749655962),
+      // LatLng(37.42936133580664, -122.089749655962),
+    ];
+
     return SafeArea(
       child: BlocListener<RouteBloc, RouteState>(
         listener: (context, state) {
           if (state is GetCoordinateRouteByScheduleIdSuccess) {
             //TODO
             print("Al final de todo entro aqui ${state.response.length}");
+          } else if (state is GetCoordinateRouteByScheduleIdSuccess) {
+            setState(() {
+              _polylineCoordinates = state.response.map((toElement) {
+                return LatLng(toElement.Latitude, toElement.Longitude);
+              }).toList();
+            });
+            setState(() {
+              _showCoordinates = true;
+            });
           }
         },
         child: Scaffold(
@@ -151,6 +168,14 @@ class _HomeScreenState extends State<HomeScreen> {
           body: GoogleMap(
             initialCameraPosition:
                 CameraPosition(target: cityCoordinates, zoom: 14),
+            polylines: {
+              if (_polylineCoordinates.length > 0)
+                Polyline(
+                  polylineId: PolylineId("Poly1"),
+                  color: Colors.red,
+                  points: _polylineCoordinates,
+                )
+            },
           ),
           bottomNavigationBar: BottomNavigationBar(
             onTap: (index) {
