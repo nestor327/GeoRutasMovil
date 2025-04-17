@@ -5,6 +5,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_re
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_routes_by_schedule_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
+import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +17,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final LatLng cityCoordinates = const LatLng(12.728850, -86.124645);
+  List<LatLng> _polylineCoordinates = [
+    // LatLng(37.42796133580664, -122.085749655962),
+    // LatLng(37.42866133580664, -122.088749655962),
+    // LatLng(37.42936133580664, -122.089749655962),
+  ];
 
   void _showBusMenu(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -138,44 +144,53 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _showCoordinates = false;
-
-    List<LatLng> _polylineCoordinates = [
-      // LatLng(37.42796133580664, -122.085749655962),
-      // LatLng(37.42866133580664, -122.088749655962),
-      // LatLng(37.42936133580664, -122.089749655962),
-    ];
+    // var _showCoordinates = false;
 
     return SafeArea(
       child: BlocListener<RouteBloc, RouteState>(
         listener: (context, state) {
           if (state is GetCoordinateRouteByScheduleIdSuccess) {
-            //TODO
-            print("Al final de todo entro aqui ${state.response.length}");
-          } else if (state is GetCoordinateRouteByScheduleIdSuccess) {
             setState(() {
               _polylineCoordinates = state.response.map((toElement) {
                 return LatLng(toElement.Latitude, toElement.Longitude);
               }).toList();
+
+              // _polylineCoordinates = [
+              //   LatLng(37.42796133580664, -122.085749655962),
+              //   LatLng(37.42866133580664, -122.088749655962),
+              //   LatLng(37.42936133580664, -122.089749655962),
+              // ];
             });
-            setState(() {
-              _showCoordinates = true;
-            });
+            print(
+                "Se asigno los valores de la polyline ${_polylineCoordinates.length}");
+            // setState(() {
+            //   _showCoordinates = true;
+            // });
           }
         },
         child: Scaffold(
           appBar: AppBar(centerTitle: true, title: const Text("Ciudad")),
           body: GoogleMap(
             initialCameraPosition:
-                CameraPosition(target: cityCoordinates, zoom: 14),
+                CameraPosition(target: cityCoordinates, zoom: 16),
             polylines: {
               if (_polylineCoordinates.length > 0)
                 Polyline(
-                  polylineId: PolylineId("Poly1"),
-                  color: Colors.red,
-                  points: _polylineCoordinates,
-                )
+                    polylineId: PolylineId("Poly1"),
+                    color: Colors.blue,
+                    points: _polylineCoordinates,
+                    width: 4),
+              if (_polylineCoordinates.length == 0)
+                const Polyline(
+                    polylineId: PolylineId("Poly2"),
+                    color: Colors.blue,
+                    points: [
+                      LatLng(12.742475, -86.121136),
+                      LatLng(12.729415, -86.126544)
+                    ],
+                    width: 4)
             },
+            key: Key(EnvConfig.mapApyKey),
           ),
           bottomNavigationBar: BottomNavigationBar(
             onTap: (index) {
