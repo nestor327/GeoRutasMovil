@@ -53,19 +53,31 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                                     child: Text("Location${index}"),
                                   );
                                 })),
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.my_location,
-                                    color: Colors.green,
-                                  )
-                                ],
-                              )),
-                        )
+                        Visibility(
+                            visible:
+                                searchController.text.isEmpty ? true : false,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.my_location,
+                                        color: Colors.green,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "My Location",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.green),
+                                      )
+                                    ],
+                                  )),
+                            ))
                       ],
                     ),
                   ),
