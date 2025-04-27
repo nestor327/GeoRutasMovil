@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:georutasmovil/shared/utils/env.dart';
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class LocationAutoComplete extends StatefulWidget {
   @override
@@ -8,6 +13,50 @@ class LocationAutoComplete extends StatefulWidget {
 
 class LocationAutoCompleteState extends State<LocationAutoComplete> {
   final searchController = TextEditingController();
+  final String token = '1234567890';
+  var uuid = const Uuid();
+  List<dynamic> listOfLocation = [];
+  @override
+  void initState() {
+    searchController.addListener(() {
+      _onChange();
+    });
+    super.initState();
+  }
+
+  _onChange() {
+    placeSuggestion(searchController.text);
+  }
+
+  void placeSuggestion(String input) async {
+    String apiKey = EnvConfig.mapApyKey;
+
+    try {
+      String bassedUrl =
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json";
+
+      String request =
+          '$bassedUrl?input=$input&key=$apiKey&sessiontoken=$token';
+
+      var response = await http.get(Uri.parse(request));
+
+      var data = json.decode(response.body);
+
+      if (kDebugMode) {
+        print(data);
+      }
+
+      if (response.statusCode == 200) {
+        setState(() {
+          listOfLocation = json.decode(response.body)['predictions'];
+        });
+      } else {
+        //
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +92,23 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                               InputDecoration(hintText: "Busca un Lugar"),
                           onChanged: (value) {},
                         ),
-                        Expanded(
-                            child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: 5,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {},
-                                    child: Text("Location${index}"),
-                                  );
-                                })),
+                        Visibility(
+                            visible:
+                                searchController.text.isEmpty ? false : true,
+                            child: Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: listOfLocation.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {},
+                                        child: ListTile(
+                                          title: Text(listOfLocation[index]
+                                              ["description"]),
+                                        ),
+                                      );
+                                    }))),
                         Visibility(
                             visible:
                                 searchController.text.isEmpty ? true : false,
