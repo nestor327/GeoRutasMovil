@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/location_autocomplete.dart';
 
 class SearchPanel extends StatefulWidget {
   const SearchPanel({super.key});
@@ -37,10 +38,14 @@ class _SearchPanelState extends State<SearchPanel> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(Icons.location_on, color: Colors.blue),
                         SizedBox(width: 10),
-                        Text("Punto de inicio", style: TextStyle(fontSize: 16)),
+                        // Text("Punto de inicio", style: TextStyle(fontSize: 16)),
+                        Expanded(
+                          // <- AQUI
+                          child: LocationAutoComplete(),
+                        ),
                       ],
                     ),
                   ),
@@ -51,10 +56,13 @@ class _SearchPanelState extends State<SearchPanel> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(Icons.flag, color: Colors.redAccent),
                         SizedBox(width: 10),
-                        Text("Destino", style: TextStyle(fontSize: 16)),
+                        Expanded(
+                          // <- AQUI
+                          child: LocationAutoComplete(),
+                        ),
                       ],
                     ),
                   ),
