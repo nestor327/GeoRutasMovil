@@ -7,6 +7,8 @@ import 'package:georutasmovil/features/Routes/presentation/widgets/search_panel.
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../widgets/location_autocomplete.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -60,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 key: Key(EnvConfig.mapApyKey),
               ),
-              if (_showSearchPanel) const SearchPanel(),
+              if (_showSearchPanel) SearchPanel(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(

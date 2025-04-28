@@ -32,6 +32,9 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
     String apiKey = EnvConfig.mapApyKey;
 
     try {
+      if (input.isEmpty || input.length <= 3) {
+        return;
+      }
       String bassedUrl =
           "https://maps.googleapis.com/maps/api/place/autocomplete/json";
 
@@ -60,89 +63,90 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 20,
-      left: 20,
-      right: 20,
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(color: Colors.black26, blurRadius: 4),
-              ],
-            ),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      // _showDestinationField = true;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        TextField(
-                          controller: searchController,
-                          decoration:
-                              InputDecoration(hintText: "Busca un Lugar"),
-                          onChanged: (value) {},
-                        ),
-                        Visibility(
-                            visible:
-                                searchController.text.isEmpty ? false : true,
-                            child: Expanded(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: listOfLocation.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {},
-                                        child: ListTile(
-                                          title: Text(listOfLocation[index]
-                                              ["description"]),
-                                        ),
-                                      );
-                                    }))),
-                        Visibility(
-                            visible:
-                                searchController.text.isEmpty ? true : false,
-                            child: Container(
-                              margin: EdgeInsets.only(top: 20),
-                              child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.my_location,
-                                        color: Colors.green,
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        "My Location",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.green),
-                                      )
-                                    ],
-                                  )),
-                            ))
-                      ],
-                    ),
+    return
+        // Positioned(
+        //   top: 20,
+        //   left: 20,
+        //   right: 20,
+        //   child:
+        Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(color: Colors.black26, blurRadius: 4),
+            ],
+          ),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    // _showDestinationField = true;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(hintText: "Busca un Lugar"),
+                        onChanged: (value) {},
+                      ),
+                      Visibility(
+                          visible: searchController.text.isEmpty ? false : true,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: listOfLocation.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: ListTile(
+                                    title: Text(
+                                        listOfLocation[index]["description"]),
+                                  ),
+                                );
+                              })),
+                      Visibility(
+                          visible: searchController.text.isEmpty ? true : false,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(Colors.white)),
+                                onPressed: () {},
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.my_location,
+                                      color: Colors.green,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "My Location",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.black),
+                                    )
+                                  ],
+                                )),
+                          ))
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
+    // );
   }
 }
