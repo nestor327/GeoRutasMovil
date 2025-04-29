@@ -73,11 +73,8 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            // color: Colors.red,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              BoxShadow(color: Colors.black26, blurRadius: 4),
-            ],
           ),
           child: Column(
             children: [
@@ -117,15 +114,23 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                             margin: EdgeInsets.only(top: 10),
                             child: ElevatedButton(
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStatePropertyAll(Colors.white)),
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(Colors.blueAccent),
+                                  padding: const WidgetStatePropertyAll(
+                                      EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6)),
+                                  minimumSize:
+                                      const WidgetStatePropertyAll(Size(0, 0)),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
                                 onPressed: () {},
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
                                       Icons.my_location,
-                                      color: Colors.green,
+                                      color: Colors.black,
                                     ),
                                     SizedBox(width: 10),
                                     Text(
