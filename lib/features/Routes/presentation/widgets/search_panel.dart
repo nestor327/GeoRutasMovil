@@ -36,14 +36,16 @@ class _SearchPanelState extends State<SearchPanel> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(0),
                     child: Row(
                       children: [
-                        Icon(Icons.location_on, color: Colors.blue),
                         SizedBox(width: 10),
-                        // Text("Punto de inicio", style: TextStyle(fontSize: 16)),
+                        Icon(
+                          Icons.location_on,
+                          color: Colors.blue,
+                          size: 32,
+                        ),
                         Expanded(
-                          // <- AQUI
                           child: LocationAutoComplete(),
                         ),
                       ],
@@ -57,10 +59,13 @@ class _SearchPanelState extends State<SearchPanel> {
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
                       children: [
-                        Icon(Icons.flag, color: Colors.redAccent),
                         SizedBox(width: 10),
+                        Icon(
+                          Icons.flag,
+                          color: Colors.redAccent,
+                          size: 32,
+                        ),
                         Expanded(
-                          // <- AQUI
                           child: LocationAutoComplete(),
                         ),
                       ],
