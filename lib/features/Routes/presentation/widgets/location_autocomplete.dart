@@ -45,16 +45,10 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
 
       var data = json.decode(response.body);
 
-      if (kDebugMode) {
-        print(data);
-      }
-
       if (response.statusCode == 200) {
         setState(() {
           listOfLocation = json.decode(response.body)['predictions'];
         });
-      } else {
-        //
       }
     } catch (e) {
       print(e.toString());
@@ -63,17 +57,10 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Positioned(
-        //   top: 20,
-        //   left: 20,
-        //   right: 20,
-        //   child:
-        Column(
+    return Column(
       children: [
         Container(
           decoration: BoxDecoration(
-            // color: Colors.red,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -152,6 +139,5 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
         ),
       ],
     );
-    // );
   }
 }

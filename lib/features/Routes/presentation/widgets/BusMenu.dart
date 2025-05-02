@@ -14,8 +14,8 @@ void ShowBusMenu(BuildContext context) {
 
   showGeneralDialog(
     context: context,
-    barrierColor: Colors.transparent, // Quita el fondo negro transparente
-    barrierDismissible: true, // Permite cerrar al tocar fuera
+    barrierColor: Colors.transparent,
+    barrierDismissible: true,
     barrierLabel: "Cerrar menú",
     pageBuilder: (context, anim1, anim2) {
       return StatefulBuilder(builder: (context, setState) {
@@ -64,8 +64,8 @@ void ShowBusMenu(BuildContext context) {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: Container(
-                    width: screenWidth / 3, // Ancho del modal
-                    height: screenHeight * 0.35, // Altura ajustable
+                    width: screenWidth / 3,
+                    height: screenHeight * 0.35,
                     padding: const EdgeInsets.only(
                         bottom: 0, left: 10, right: 10, top: 0),
                     child: Column(
@@ -86,15 +86,6 @@ void ShowBusMenu(BuildContext context) {
                                   return ElevatedButton(
                                     onPressed: () {
                                       int weekDay = DateTime.now().weekday;
-                                      print(
-                                          "El dia encontrado fue :${weekDay}");
-                                      print(
-                                          "La fecha fue :${TimeOfDay.now().format(context)}");
-                                      print(
-                                          "La fecha fue :${DateTime.now().timeZoneOffset.toString()}");
-                                      print(
-                                          "El id del bus fue :${buses[index].Id}");
-
                                       GetScheduleByBusIdWeekDayAndHourRequest
                                           request =
                                           GetScheduleByBusIdWeekDayAndHourRequest(
