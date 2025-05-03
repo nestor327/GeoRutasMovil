@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:uuid/uuid.dart';
@@ -43,7 +42,7 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
 
       var response = await http.get(Uri.parse(request));
 
-      var data = json.decode(response.body);
+      // var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
         setState(() {
@@ -98,14 +97,14 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                       Visibility(
                           visible: searchController.text.isEmpty ? true : false,
                           child: Container(
-                            margin: EdgeInsets.only(top: 10),
+                            margin: EdgeInsets.only(top: 1),
                             child: ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
                                       WidgetStatePropertyAll(Colors.blueAccent),
                                   padding: const WidgetStatePropertyAll(
                                       EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 6)),
+                                          horizontal: 12, vertical: 4)),
                                   minimumSize:
                                       const WidgetStatePropertyAll(Size(0, 0)),
                                   tapTargetSize:
