@@ -6,6 +6,12 @@ import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
 class LocationAutoComplete extends StatefulWidget {
+  final String titulo;
+  const LocationAutoComplete({
+    Key? key,
+    required this.titulo,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => LocationAutoCompleteState();
 }
@@ -47,10 +53,33 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
       if (response.statusCode == 200) {
         setState(() {
           listOfLocation = json.decode(response.body)['predictions'];
+          print(listOfLocation[0]);
         });
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  Future<void> getCoordinatesFromPlaceId(String placeId) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=${EnvConfig.mapApyKey}',
+    );
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['status'] == 'OK') {
+        final location = data['result']['geometry']['location'];
+        final lat = location['lat'];
+        final lng = location['lng'];
+        print('Latitude: $lat, Longitude: $lng');
+      } else {
+        print('API error: ${data['status']} - ${data['error_message']}');
+      }
+    } else {
+      print('Request failed with status: ${response.statusCode}');
     }
   }
 
@@ -76,7 +105,7 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                     children: [
                       TextField(
                         controller: searchController,
-                        decoration: InputDecoration(hintText: "Busca un Lugar"),
+                        decoration: InputDecoration(hintText: widget.titulo),
                         onChanged: (value) {},
                       ),
                       Visibility(
@@ -87,7 +116,11 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                               itemCount: listOfLocation.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    print("Se le dio clcik a la opcion");
+                                    getCoordinatesFromPlaceId(
+                                        listOfLocation[index]["place_id"]);
+                                  },
                                   child: ListTile(
                                     title: Text(
                                         listOfLocation[index]["description"]),
@@ -99,14 +132,14 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
                           child: Container(
                             margin: EdgeInsets.only(top: 1),
                             child: ElevatedButton(
-                                style: ButtonStyle(
+                                style: const ButtonStyle(
                                   backgroundColor:
                                       WidgetStatePropertyAll(Colors.blueAccent),
-                                  padding: const WidgetStatePropertyAll(
+                                  padding: WidgetStatePropertyAll(
                                       EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 4)),
                                   minimumSize:
-                                      const WidgetStatePropertyAll(Size(0, 0)),
+                                      WidgetStatePropertyAll(Size(0, 0)),
                                   tapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
