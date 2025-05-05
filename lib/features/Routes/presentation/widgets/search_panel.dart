@@ -46,7 +46,8 @@ class _SearchPanelState extends State<SearchPanel> {
                           size: 32,
                         ),
                         Expanded(
-                          child: LocationAutoComplete(),
+                          child:
+                              LocationAutoComplete(titulo: "Busca un origen"),
                         ),
                       ],
                     ),
@@ -56,7 +57,7 @@ class _SearchPanelState extends State<SearchPanel> {
                   const Divider(height: 1, color: Colors.grey),
                 if (_showDestinationField)
                   Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(0),
                     child: Row(
                       children: [
                         SizedBox(width: 10),
@@ -66,7 +67,9 @@ class _SearchPanelState extends State<SearchPanel> {
                           size: 32,
                         ),
                         Expanded(
-                          child: LocationAutoComplete(),
+                          child: LocationAutoComplete(
+                            titulo: "Busca un destino",
+                          ),
                         ),
                       ],
                     ),
