@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
@@ -74,6 +76,17 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
         final location = data['result']['geometry']['location'];
         final lat = location['lat'];
         final lng = location['lng'];
+
+        if (widget.titulo == "Busca un origen") {
+          context
+              .read<RouteLocationBloc>()
+              .add(SetOriginCoordinates(lat: 29.5603, lng: -95.0937));
+        } else {
+          context
+              .read<RouteLocationBloc>()
+              .add(SetDestinationCoordinates(lat: 29.7499, lng: -95.3584));
+        }
+
         print('Latitude: $lat, Longitude: $lng');
       } else {
         print('API error: ${data['status']} - ${data['error_message']}');
