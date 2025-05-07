@@ -41,6 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
               GoogleMap(
                 initialCameraPosition:
                     CameraPosition(target: cityCoordinates, zoom: 16),
+                markers: {
+                  Marker(
+                    markerId: MarkerId('marker_1'),
+                    position: LatLng(12.729415, -86.126544),
+                    infoWindow: InfoWindow(title: 'Punto A', snippet: 'Inicio'),
+                  ),
+                  Marker(
+                    markerId: MarkerId('marker_2'),
+                    position: LatLng(12.742475, -86.121136),
+                    infoWindow:
+                        InfoWindow(title: 'Punto B', snippet: 'Destino'),
+                  ),
+                },
                 polylines: {
                   if (_polylineCoordinates.length > 0)
                     Polyline(
