@@ -4,6 +4,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_re
 import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenu.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/compact_search_box.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/search_panel.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Set<Marker> markers = {};
 
       if (state.originLat != null && state.originLng != null) {
+        print("El origen fue: ${state.originLat!} + ${state.originLng!}");
+
         markers.add(
           Marker(
             markerId: MarkerId('origin'),
@@ -50,6 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           ),
         );
+      }
+
+      void miFuncion() {
+        print("Hola, estoy ejecutando miFuncion!");
       }
 
       return SafeArea(
@@ -90,7 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   key: Key(EnvConfig.mapApyKey),
                 ),
-                if (_showSearchPanel) SearchPanel(),
+                // if (_showSearchPanel) SearchPanel(),
+                if (_showSearchPanel)
+                  CompactSearchBox(
+                      onMyLocationDestino: miFuncion,
+                      onMyLocationOrigen: miFuncion),
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(

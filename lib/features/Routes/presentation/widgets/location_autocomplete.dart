@@ -78,13 +78,15 @@ class LocationAutoCompleteState extends State<LocationAutoComplete> {
         final lng = location['lng'];
 
         if (widget.titulo == "Busca un origen") {
+          print("SE GUARDO EL ORIGIN");
           context
               .read<RouteLocationBloc>()
-              .add(SetOriginCoordinates(lat: 29.5603, lng: -95.0937));
+              .add(SetOriginCoordinates(lat: lat, lng: lng));
         } else {
+          print("SE GUARDO EL DESTINO");
           context
               .read<RouteLocationBloc>()
-              .add(SetDestinationCoordinates(lat: 29.7499, lng: -95.3584));
+              .add(SetDestinationCoordinates(lat: lat, lng: lng));
         }
 
         print('Latitude: $lat, Longitude: $lng');
