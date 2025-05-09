@@ -21,6 +21,7 @@ import 'package:georutasmovil/features/Routes/domain/use_cases/get_schedule_by_b
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_stop_by_range_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_stops_by_schedule_id_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_trips_by_location_use_case.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/coodinates/data/datasources/CoordinateNetApiSource.dart';
 import 'package:georutasmovil/features/coodinates/data/repositories/CoordinateRepositoryImpl.dart';
@@ -98,4 +99,5 @@ Future<void> init() async {
   di.registerFactory(() => UserBloc(di(), di(), di(), di(), di()));
   di.registerFactory(() =>
       RouteBloc(di(), di(), di(), di(), di(), di(), di(), di(), di(), di()));
+  di.registerFactory(() => RouteLocationBloc());
 }
