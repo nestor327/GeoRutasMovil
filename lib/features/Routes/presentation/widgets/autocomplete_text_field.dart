@@ -28,6 +28,8 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
   final searchController = TextEditingController();
   final String token = '1234567890';
   var uuid = const Uuid();
+  final FocusNode _focusNode = FocusNode();
+  bool focusActivo = false;
 
   void placeSuggestion(String input) async {
     String apiKey = EnvConfig.mapApyKey;
@@ -68,9 +70,23 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
       _onChange();
     });
     super.initState();
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        print('TextField recibió el foco');
+        setState(() {
+          focusActivo = true;
+        });
+      } else {
+        print('TextField perdió el foco');
+        setState(() {
+          focusActivo = false;
+        });
+      }
+    });
   }
 
-  Future<void> getCoordinatesFromPlaceId(String placeId) async {
+  Future<void> getCoordinatesFromPlaceId(
+      String placeId, String description) async {
     final url = Uri.parse(
       'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=${EnvConfig.mapApyKey}',
     );
@@ -89,11 +105,25 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
           context
               .read<RouteLocationBloc>()
               .add(SetOriginCoordinates(lat: lat, lng: lng));
+
+          setState(() {
+            listOfLocation = [];
+            searchController.text = description.length <= 26
+                ? description
+                : description.substring(0, 25);
+          });
         } else {
           print("SE GUARDO EL DESTINO");
           context
               .read<RouteLocationBloc>()
               .add(SetDestinationCoordinates(lat: lat, lng: lng));
+
+          setState(() {
+            listOfLocation = [];
+            searchController.text = description.length <= 26
+                ? description
+                : description.substring(0, 25);
+          });
         }
 
         print('Latitude: $lat, Longitude: $lng');
@@ -103,6 +133,12 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
     } else {
       print('Request failed with status: ${response.statusCode}');
     }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose(); // Muy importante limpiar el FocusNode
+    super.dispose();
   }
 
   @override
@@ -116,6 +152,7 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
                 controller: searchController,
                 decoration: InputDecoration(hintText: widget.titulo),
                 onChanged: (value) {},
+                focusNode: _focusNode,
               ),
               Visibility(
                   visible: searchController.text.isEmpty ? false : true,
@@ -128,13 +165,14 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
                           onTap: () {
                             print("Se le dio clcik a la opcion");
                             getCoordinatesFromPlaceId(
-                                listOfLocation[index]["place_id"]);
+                                listOfLocation[index]["place_id"],
+                                listOfLocation[index]["description"]);
                           },
                           child: ListTile(
                             title: Text(listOfLocation[index]["description"]
                                         .toString()
                                         .length <
-                                    25
+                                    26
                                 ? listOfLocation[index]["description"]
                                 : listOfLocation[index]["description"]
                                     .toString()
@@ -156,7 +194,8 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
             ),
             onPressed: widget.onTap,
             icon: const Icon(Icons.my_location, size: 16),
-            label: const Text("Mi ubicación", style: TextStyle(fontSize: 12)),
+            label: Text("${focusActivo ? "" : "Mi ubicación"}",
+                style: TextStyle(fontSize: 12)),
           ),
         )
       ],
