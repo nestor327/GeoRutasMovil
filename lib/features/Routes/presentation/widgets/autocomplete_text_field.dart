@@ -36,7 +36,8 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
 
     print("Intentando obtener lugares");
     try {
-      if (input.isEmpty || input.length <= 3) {
+      print("El focus activo es: ${focusActivo}");
+      if (input.isEmpty || input.length <= 3 || !focusActivo) {
         return;
       }
       String bassedUrl =
@@ -125,6 +126,10 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
                 : description.substring(0, 25);
           });
         }
+        _focusNode.unfocus();
+        // setState(() {
+        //   focusActivo = false;
+        // });
 
         print('Latitude: $lat, Longitude: $lng');
       } else {
@@ -155,7 +160,9 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
                 focusNode: _focusNode,
               ),
               Visibility(
-                  visible: searchController.text.isEmpty ? false : true,
+                  visible: searchController.text.isEmpty || !focusActivo
+                      ? false
+                      : true,
                   child: ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),

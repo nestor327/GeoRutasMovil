@@ -5,7 +5,6 @@ import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/r
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenu.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/compact_search_box.dart';
-import 'package:georutasmovil/features/Routes/presentation/widgets/search_panel.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           },
           child: Scaffold(
-            appBar: AppBar(centerTitle: true, title: const Text("Ciudad")),
+            // appBar: AppBar(centerTitle: true, title: const Text("Ciudad")),
             body: Stack(
               children: [
                 GoogleMap(
