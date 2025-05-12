@@ -11,6 +11,7 @@ void ShowBusMenu(BuildContext context) {
   final screenHeight = MediaQuery.of(context).size.height;
   bool _showList = false;
   late List<Bus> buses;
+  final listBusSearch = [1, 2, 3];
 
   showGeneralDialog(
     context: context,

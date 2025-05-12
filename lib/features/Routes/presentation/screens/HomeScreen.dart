@@ -4,6 +4,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_re
 import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenu.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenuWidget.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/compact_search_box.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final LatLng cityCoordinates = const LatLng(12.728850, -86.124645);
   List<LatLng> _polylineCoordinates = [];
   bool _showSearchPanel = false;
+  bool _showMenuList = false;
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   CompactSearchBox(
                       onMyLocationDestino: miFuncion,
                       onMyLocationOrigen: miFuncion),
+                if (_showMenuList || true) BusMenuWidget()
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
