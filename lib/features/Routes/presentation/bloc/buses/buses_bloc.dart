@@ -10,16 +10,23 @@ class BusesBloc extends Bloc<BusesEvent, BusesState> {
 
   Future<void> _onCargarBuses(
       CargarBuses event, Emitter<BusesState> emit) async {
-    emit(BusesCargando());
+    emit(BusesLoading());
 
     try {
       // Simulación de carga
       await Future.delayed(Duration(seconds: 2));
 
       // Puedes reemplazar esto con una llamada real a una API o base de datos
+
+      if (event.tipoBusqueda.isEmpty) {
+        print("No hay ni mierda que validar");
+      } else {
+        print("El tipo de busqueda fue ${event.tipoBusqueda}");
+      }
+
       final List<Bus> buses = [];
 
-      emit(BusesCargados(tipoBusqueda: event.tipoBusqueda, buses: buses));
+      emit(BusesLoaded(tipoBusqueda: event.tipoBusqueda, buses: buses));
     } catch (e) {
       emit(BusesError('Error al cargar los buses'));
     }

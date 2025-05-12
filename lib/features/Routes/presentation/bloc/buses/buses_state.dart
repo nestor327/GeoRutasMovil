@@ -10,13 +10,13 @@ abstract class BusesState extends Equatable {
 
 class BusesInicial extends BusesState {}
 
-class BusesCargando extends BusesState {}
+class BusesLoading extends BusesState {}
 
-class BusesCargados extends BusesState {
+class BusesLoaded extends BusesState {
   final String tipoBusqueda;
   final List<Bus> buses;
 
-  const BusesCargados({required this.tipoBusqueda, required this.buses});
+  const BusesLoaded({required this.tipoBusqueda, required this.buses});
 
   @override
   List<Object?> get props => [tipoBusqueda, buses];
