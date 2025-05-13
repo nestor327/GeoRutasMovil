@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   CompactSearchBox(
                       onMyLocationDestino: miFuncion,
                       onMyLocationOrigen: miFuncion),
-                if (_showMenuList || true) BusMenuWidget()
+                if (_showMenuList) BusMenuWidget()
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -116,7 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     .add(GetBusesByTypeEvent(request: request));
 
                 if (index == 0) {
-                  ShowBusMenu(context);
+                  // ShowBusMenu(context);
+                  setState(() {
+                    _showMenuList = !_showMenuList;
+                  });
                 } else if (index == 1) {
                   setState(() {
                     _showSearchPanel = !_showSearchPanel;
