@@ -199,29 +199,56 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
 
                   // Si está activo el selector de tipo
                   else if (showTipoSelector)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        hint: const Text('Selecciona un tipo'),
-                        value: selectedTipo,
-                        items: tipos.map((tipo) {
-                          return DropdownMenuItem(
-                            value: tipo,
-                            child: Text(tipo),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedTipo = value;
-                            showTipoSelector = false;
-                          });
-                          if (value != null) {
-                            context.read<BusesBloc>().add(CargarBuses(value));
-                          }
-                        },
-                      ),
-                    )
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          DropdownButton<String>(
+                            isExpanded: true,
+                            hint: const Text('Selecciona un tipo'),
+                            value: selectedTipo,
+                            items: tipos.map((tipo) {
+                              return DropdownMenuItem(
+                                value: tipo,
+                                child: Text(tipo),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedTipo = value;
+                                showTipoSelector = false;
+                              });
+                              if (value != null) {
+                                context
+                                    .read<BusesBloc>()
+                                    .add(CargarBuses(value));
+                              }
+                            },
+                          )
+                        ])
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 4),
+                  //   child: DropdownButton<String>(
+                  //     isExpanded: true,
+                  //     hint: const Text('Selecciona un tipo'),
+                  //     value: selectedTipo,
+                  //     items: tipos.map((tipo) {
+                  //       return DropdownMenuItem(
+                  //         value: tipo,
+                  //         child: Text(tipo),
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (value) {
+                  //       setState(() {
+                  //         selectedTipo = value;
+                  //         showTipoSelector = false;
+                  //       });
+                  //       if (value != null) {
+                  //         context.read<BusesBloc>().add(CargarBuses(value));
+                  //       }
+                  //     },
+                  //   ),
+                  // )
 
                   // Si no hay búsqueda ni buses
                   else
@@ -229,25 +256,68 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() => showTipoSelector = true);
-                          },
-                          child: const Text('Tipo'),
+                        SizedBox(
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() => showTipoSelector = true);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero),
+                              child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                isExpanded: true,
+                                dropdownColor: Colors.white,
+                                alignment: Alignment.center,
+                                icon: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
+                                hint: const Text(
+                                  'Tipo',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                value: selectedTipo,
+                                items: tipos.map((tipo) {
+                                  return DropdownMenuItem(
+                                    value: tipo,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      tipo,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedTipo = value;
+                                    showTipoSelector = false;
+                                  });
+                                  if (value != null) {
+                                    context
+                                        .read<BusesBloc>()
+                                        .add(CargarBuses(value));
+                                  }
+                                },
+                              )),
+                            )),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Acción futura
+                            },
+                            child: const Text('Nombre'),
+                          ),
                         ),
                         const SizedBox(height: 5),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Acción futura
-                          },
-                          child: const Text('Nombre'),
-                        ),
-                        const SizedBox(height: 5),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Acción futura
-                          },
-                          child: const Text('Ubicación'),
+                        SizedBox(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Acción futura
+                            },
+                            child: const Text('Ubicación'),
+                          ),
                         ),
                       ],
                     ),
