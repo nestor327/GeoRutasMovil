@@ -120,7 +120,7 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
   bool showTipoSelector = false;
   String? selectedTipo;
 
-  final List<String> tipos = ['Tipo 1', 'Tipo 2', 'Tipo 3'];
+  final List<String> tipos = ['Cooperativas', 'Ruteados', 'Independientes'];
 
   @override
   Widget build(BuildContext context) {
