@@ -23,35 +23,37 @@ class BusesBloc extends Bloc<BusesEvent, BusesState> {
 
       if (event.tipoBusqueda.isEmpty) {
         print("No hay ni mierda que validar");
+
+        final List<Bus> buses = [];
+
+        emit(BusesLoaded(tipoBusqueda: event.tipoBusqueda, buses: buses));
       } else {
-        if (event.tipoBusqueda == "Cooperativas") {
-          final resp = await dio.get(
-            'http://192.168.1.14:5005/v1/bus/buses-by-bustype?busTypeId=${1}',
-            options: Options(
-              headers: {
-                'accept': 'text/plain',
-                'X-Language': 'es',
-                'Content-Type': 'application/json',
-                'X-Api-Key': EnvConfig.geoRutasApyKey
-              },
-            ),
-          );
+        final busType = (event.tipoBusqueda == "Cooperativas") ? 1 : 2;
 
-          print("El resp code fue: ${resp.statusCode}");
-          if (resp.statusCode == 200) {
-            final List<Bus> busTypeModels = Bus.parseEntidades(resp.data);
+        final resp = await dio.get(
+          'http://192.168.1.14:5005/v1/bus/buses-by-bustype?busTypeId=${busType}',
+          options: Options(
+            headers: {
+              'accept': 'text/plain',
+              'X-Language': 'es',
+              'Content-Type': 'application/json',
+              'X-Api-Key': EnvConfig.geoRutasApyKey
+            },
+          ),
+        );
 
-            emit(BusesLoaded(
-                tipoBusqueda: event.tipoBusqueda, buses: busTypeModels));
-          }
+        print("El resp code fue: ${resp.statusCode}");
+        if (resp.statusCode == 200) {
+          final List<Bus> busTypeModels = Bus.parseEntidades(resp.data);
+
+          print("La cantidad de buses fue: ${busTypeModels.length}");
+
+          emit(BusesLoaded(
+              tipoBusqueda: event.tipoBusqueda, buses: busTypeModels));
         }
 
         print("El tipo de busqueda fue ${event.tipoBusqueda}");
       }
-
-      final List<Bus> buses = [];
-
-      emit(BusesLoaded(tipoBusqueda: event.tipoBusqueda, buses: buses));
     } catch (e) {
       emit(BusesError('Error al cargar los buses'));
     }
