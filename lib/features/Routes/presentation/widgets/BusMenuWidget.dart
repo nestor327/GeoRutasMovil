@@ -136,7 +136,7 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
             maxHeight: screenSize.height * 0.4,
           ),
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
             borderRadius: BorderRadius.only(topRight: Radius.circular(12)),
@@ -149,17 +149,41 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
               if (state is BusesLoaded) {
                 tipoBusqueda = state.tipoBusqueda;
                 buses = state.buses;
+                print("Aqui se actyalizo la mierda ${buses.length}");
               }
 
+              // ignore: prefer_const_constructors
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Buses',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: buses.isEmpty
+                        ? MainAxisAlignment.center
+                        : MainAxisAlignment.start,
+                    children: [
+                      if (buses.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            context.read<BusesBloc>().add(CargarBuses(""));
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 22,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                      Text(
+                        'Buses',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )
+                    ],
                   ),
-                  const SizedBox(height: 8),
+
                   if (buses.isEmpty)
                     Text(
                       showTipoSelector ? 'Tipo →' : 'Buscar por',
@@ -169,7 +193,31 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                         color: Colors.black54,
                       ),
                     ),
-                  const SizedBox(height: 8),
+                  if (buses.isEmpty) const SizedBox(height: 8),
+
+                  // IconButton(
+                  //   icon: const Icon(
+                  //     Icons.arrow_back,
+                  //     size: 20, // Tamaño más pequeño
+                  //     color: Colors.grey, // Color más tenue
+                  //   ),
+                  //   onPressed: () {
+                  //     //       context.read<BusesBloc>().add(CargarBuses(""));
+                  //   },
+                  //   padding: EdgeInsets.zero,
+                  //   constraints:
+                  //       const BoxConstraints(), // Elimina restricciones de tamaño por defecto
+                  // ),
+
+                  // Align(
+                  //   alignment: Alignment.centerLeft,
+                  //   child: IconButton(
+                  //     icon: const Icon(Icons.arrow_back),
+                  //     onPressed: () {
+
+                  //     },
+                  //   ),
+                  // ),
 
                   // Si hay buses, mostramos la lista
                   if (buses.isNotEmpty)
@@ -182,8 +230,9 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                           return Container(
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             padding: const EdgeInsets.all(8),
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                              color: Colors.blue[200],
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -196,61 +245,6 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                         },
                       ),
                     )
-
-                  // Si está activo el selector de tipo
-                  else if (showTipoSelector)
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          DropdownButton<String>(
-                            isExpanded: true,
-                            hint: const Text('Selecciona un tipo'),
-                            value: selectedTipo,
-                            items: tipos.map((tipo) {
-                              return DropdownMenuItem(
-                                value: tipo,
-                                child: Text(tipo),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedTipo = value;
-                                showTipoSelector = false;
-                              });
-                              if (value != null) {
-                                context
-                                    .read<BusesBloc>()
-                                    .add(CargarBuses(value));
-                              }
-                            },
-                          )
-                        ])
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 4),
-                  //   child: DropdownButton<String>(
-                  //     isExpanded: true,
-                  //     hint: const Text('Selecciona un tipo'),
-                  //     value: selectedTipo,
-                  //     items: tipos.map((tipo) {
-                  //       return DropdownMenuItem(
-                  //         value: tipo,
-                  //         child: Text(tipo),
-                  //       );
-                  //     }).toList(),
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         selectedTipo = value;
-                  //         showTipoSelector = false;
-                  //       });
-                  //       if (value != null) {
-                  //         context.read<BusesBloc>().add(CargarBuses(value));
-                  //       }
-                  //     },
-                  //   ),
-                  // )
-
-                  // Si no hay búsqueda ni buses
                   else
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -282,7 +276,8 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       tipo,
-                                      style: TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                     ),
                                   );
                                 }).toList(),
