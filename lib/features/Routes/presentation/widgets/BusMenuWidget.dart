@@ -5,110 +5,6 @@ import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_bloc
 import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_event.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_state.dart';
 
-// class BusMenuWidget extends StatefulWidget {
-//   const BusMenuWidget({super.key});
-
-//   @override
-//   State<BusMenuWidget> createState() => _BusMenuWidgetState();
-// }
-
-// class _BusMenuWidgetState extends State<BusMenuWidget> {
-//   bool showComboBox = false;
-//   String? selectedTipo;
-
-//   final List<String> tipos = ['Tipo 1', 'Tipo 2', 'Tipo 3'];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final screenSize = MediaQuery.of(context).size;
-
-//     return Positioned(
-//       left: 0,
-//       bottom: 0,
-//       child: SafeArea(
-//         child: Container(
-//           width: screenSize.width * 0.25,
-//           constraints: BoxConstraints(
-//             maxHeight: screenSize.height * 0.4,
-//           ),
-//           color: Colors.white,
-//           child: BlocBuilder<BusesBloc, BusesState>(
-//             builder: (context, state) {
-//               String? tipoBusqueda;
-//               List<Bus> buses = [];
-
-//               if (state is BusesLoaded) {
-//                 tipoBusqueda = state.tipoBusqueda;
-//                 buses = state.buses;
-//               }
-
-//               if (tipoBusqueda == null || tipoBusqueda.isEmpty || true) {
-//                 return Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       "Buses",
-//                       textAlign: TextAlign.center
-//                     ),
-//                     TextButton(
-//                       onPressed: () {
-//                         setState(() => showComboBox = !showComboBox);
-//                       },
-//                       child: const Text('Tipo'),
-//                     ),
-//                     TextButton(
-//                       onPressed: () {}, // Aquí puedes emitir eventos si deseas
-//                       child: const Text('Nombre'),
-//                     ),
-//                     TextButton(
-//                       onPressed: () {},
-//                       child: const Text('Ubicación'),
-//                     ),
-//                     if (showComboBox)
-//                       Padding(
-//                         padding: const EdgeInsets.only(left: 8.0),
-//                         child: DropdownButton<String>(
-//                           hint: const Text('Selecciona un tipo'),
-//                           value: selectedTipo,
-//                           items: tipos.map((tipo) {
-//                             return DropdownMenuItem(
-//                               value: tipo,
-//                               child: Text(tipo),
-//                             );
-//                           }).toList(),
-//                           onChanged: (value) {
-//                             setState(() => selectedTipo = value);
-//                             if (value != null) {
-//                               context.read<BusesBloc>().add(CargarBuses(value));
-//                             }
-//                           },
-//                         ),
-//                       ),
-//                   ],
-//                 );
-//               } else {
-//                 return Container(
-//                   color: Colors.lightBlue[50],
-//                   child: ListView(
-//                     children: buses
-//                         .map((bus) => Container(
-//                               margin: const EdgeInsets.all(4),
-//                               padding: const EdgeInsets.all(8),
-//                               color: Colors.blue[100],
-//                               child: Text(bus.Name),
-//                             ))
-//                         .toList(),
-//                   ),
-//                 );
-//               }
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class BusMenuWidget extends StatefulWidget {
   const BusMenuWidget({super.key});
 
@@ -118,6 +14,7 @@ class BusMenuWidget extends StatefulWidget {
 
 class _BusMenuWidgetState extends State<BusMenuWidget> {
   bool showTipoSelector = false;
+  bool showAcitivityIndicator = false;
   String? selectedTipo;
 
   final List<String> tipos = ['Cooperativas', 'Ruteados', 'Independientes'];
@@ -151,8 +48,12 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                 buses = state.buses;
                 print("Aqui se actyalizo la mierda ${buses.length}");
               }
+              if (state is BusesLoading) {
+                showAcitivityIndicator = true;
+              } else {
+                showAcitivityIndicator = false;
+              }
 
-              // ignore: prefer_const_constructors
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -165,7 +66,10 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                       if (buses.isNotEmpty)
                         GestureDetector(
                           onTap: () {
-                            context.read<BusesBloc>().add(CargarBuses(""));
+                            // context.read<BusesBloc>().add(CargarBuses(""));
+                            setState(() {
+                              buses = [];
+                            });
                           },
                           child: const Padding(
                             padding: EdgeInsets.only(right: 5),
@@ -183,7 +87,6 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                       )
                     ],
                   ),
-
                   if (buses.isEmpty)
                     Text(
                       showTipoSelector ? 'Tipo →' : 'Buscar por',
@@ -194,32 +97,8 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                       ),
                     ),
                   if (buses.isEmpty) const SizedBox(height: 8),
-
-                  // IconButton(
-                  //   icon: const Icon(
-                  //     Icons.arrow_back,
-                  //     size: 20, // Tamaño más pequeño
-                  //     color: Colors.grey, // Color más tenue
-                  //   ),
-                  //   onPressed: () {
-                  //     //       context.read<BusesBloc>().add(CargarBuses(""));
-                  //   },
-                  //   padding: EdgeInsets.zero,
-                  //   constraints:
-                  //       const BoxConstraints(), // Elimina restricciones de tamaño por defecto
-                  // ),
-
-                  // Align(
-                  //   alignment: Alignment.centerLeft,
-                  //   child: IconButton(
-                  //     icon: const Icon(Icons.arrow_back),
-                  //     onPressed: () {
-
-                  //     },
-                  //   ),
-                  // ),
-
-                  // Si hay buses, mostramos la lista
+                  if (showAcitivityIndicator)
+                    const Center(child: CircularProgressIndicator()),
                   if (buses.isNotEmpty)
                     SizedBox(
                       height: screenSize.height * 0.25,
