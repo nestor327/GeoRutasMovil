@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_bloc.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_state.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
-import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenu.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenuWidget.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/autocomplete_search_bus.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/autocomplete_search_bus_by_location.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/compact_search_box.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,6 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List<LatLng> _polylineCoordinates = [];
   bool _showSearchPanel = false;
   bool _showMenuList = false;
+  bool _showAutoCompleteBusName = false;
+  int _selectedNavegationIndex = 0;
+  bool _showAutoCompleteBusLocation = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,21 +67,50 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       return SafeArea(
-        child: BlocListener<RouteBloc, RouteState>(
-          listener: (context, state) {
-            if (state is GetCoordinateRouteByScheduleIdSuccess) {
-              setState(() {
-                _polylineCoordinates = state.response.map((toElement) {
-                  return LatLng(toElement.Latitude, toElement.Longitude);
-                }).toList();
-              });
-            }
-          },
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<RouteBloc, RouteState>(
+              listener: (context, state) {
+                if (state is GetCoordinateRouteByScheduleIdSuccess) {
+                  setState(() {
+                    _polylineCoordinates = state.response.map((toElement) {
+                      return LatLng(toElement.Latitude, toElement.Longitude);
+                    }).toList();
+                  });
+                }
+              },
+            ),
+            BlocListener<BusesBloc, BusesState>(
+              listener: (context, state) {
+                if (state is ShowSearchBusFieldLoaded) {
+                  print(
+                      "Se esta intentando actualizar la mierda ${state.showAutoCompleteBusName}");
+
+                  setState(() {
+                    _showAutoCompleteBusName = state.showAutoCompleteBusName!;
+                  });
+                }
+                if (state is ShowSearchLocationBusFieldLoaded) {
+                  setState(() {
+                    _showAutoCompleteBusLocation =
+                        state.showAutoCompleteBusLocation!;
+                  });
+                }
+              },
+            )
+          ],
           child: Scaffold(
-            // appBar: AppBar(centerTitle: true, title: const Text("Ciudad")),
             body: Stack(
               children: [
                 GoogleMap(
+                  onTap: (argument) => {
+                    setState(() {
+                      _showSearchPanel = false;
+                      _showMenuList = false;
+                      _showAutoCompleteBusName = false;
+                      _showAutoCompleteBusLocation = false;
+                    })
+                  },
                   initialCameraPosition:
                       CameraPosition(target: cityCoordinates, zoom: 16),
                   markers: markers,
@@ -98,15 +133,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   key: Key(EnvConfig.mapApyKey),
                 ),
-                // if (_showSearchPanel) SearchPanel(),
                 if (_showSearchPanel)
                   CompactSearchBox(
                       onMyLocationDestino: miFuncion,
                       onMyLocationOrigen: miFuncion),
-                if (_showMenuList) BusMenuWidget()
+                if (_showMenuList &&
+                    !_showAutoCompleteBusName &&
+                    !_showAutoCompleteBusLocation)
+                  BusMenuWidget(),
+                if (_showAutoCompleteBusName)
+                  AutocompleteSearchBus(
+                    onBusName: miFuncion,
+                  ),
+                if (_showAutoCompleteBusLocation)
+                  AutocompleteSearchBusByLocation(onBusLocation: miFuncion)
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _selectedNavegationIndex,
               onTap: (index) {
                 GetBusesByTypeRequest request =
                     new GetBusesByTypeRequest(BusTypeId: 1);
@@ -116,13 +160,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     .add(GetBusesByTypeEvent(request: request));
 
                 if (index == 0) {
-                  // ShowBusMenu(context);
                   setState(() {
-                    _showMenuList = !_showMenuList;
+                    _showMenuList = (_showAutoCompleteBusName ||
+                            _showAutoCompleteBusLocation)
+                        ? true
+                        : !_showMenuList;
+                    _showSearchPanel = false;
+                    _showAutoCompleteBusName = false;
+                    _selectedNavegationIndex = 0;
+                    _showAutoCompleteBusLocation = false;
                   });
                 } else if (index == 1) {
                   setState(() {
                     _showSearchPanel = !_showSearchPanel;
+                    _showMenuList = false;
+                    _showAutoCompleteBusName = false;
+                    _selectedNavegationIndex = 1;
+                    _showAutoCompleteBusLocation = false;
+                  });
+                } else {
+                  setState(() {
+                    _showSearchPanel = false;
+                    _showMenuList = false;
+                    _showAutoCompleteBusName = false;
+                    _selectedNavegationIndex = index;
+                    _showAutoCompleteBusLocation = false;
                   });
                 }
               },

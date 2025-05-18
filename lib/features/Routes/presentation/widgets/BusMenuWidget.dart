@@ -45,6 +45,10 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
 
               if (state is BusesLoaded) {
                 tipoBusqueda = state.tipoBusqueda;
+                if (tipoBusqueda.isEmpty) {
+                  showAcitivityIndicator = false;
+                  selectedTipo = null;
+                }
                 buses = state.buses;
                 print("Aqui se actyalizo la mierda ${buses.length}");
               }
@@ -59,17 +63,17 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: buses.isEmpty
-                        ? MainAxisAlignment.center
-                        : MainAxisAlignment.start,
+                    mainAxisAlignment:
+                        (buses.isEmpty && !showAcitivityIndicator)
+                            ? MainAxisAlignment.center
+                            : MainAxisAlignment.start,
                     children: [
-                      if (buses.isNotEmpty)
+                      if (buses.isNotEmpty || showAcitivityIndicator)
                         GestureDetector(
                           onTap: () {
-                            // context.read<BusesBloc>().add(CargarBuses(""));
-                            setState(() {
-                              buses = [];
-                            });
+                            context
+                                .read<BusesBloc>()
+                                .add(const CargarBuses(""));
                           },
                           child: const Padding(
                             padding: EdgeInsets.only(right: 5),
@@ -80,14 +84,14 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                             ),
                           ),
                         ),
-                      Text(
+                      const Text(
                         'Buses',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
-                  if (buses.isEmpty)
+                  if (buses.isEmpty && !showAcitivityIndicator)
                     Text(
                       showTipoSelector ? 'Tipo →' : 'Buscar por',
                       style: const TextStyle(
@@ -124,7 +128,7 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                         },
                       ),
                     )
-                  else
+                  else if (!showAcitivityIndicator)
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -178,7 +182,11 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                           height: 60,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Acción futura
+                              print("Se esta intentando actualizar la mierda");
+
+                              context
+                                  .read<BusesBloc>()
+                                  .add(SetShowSearchBusField(true));
                             },
                             child: const Text('Nombre'),
                           ),
@@ -188,13 +196,17 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                           height: 60,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Acción futura
+                              context
+                                  .read<BusesBloc>()
+                                  .add(SetShowSearchBusLocationField(true));
                             },
                             child: const Text('Ubicación'),
                           ),
                         ),
                       ],
-                    ),
+                    )
+                  else
+                    const SizedBox(height: 165)
                 ],
               );
             },
