@@ -8,9 +8,46 @@ abstract class BusesState extends Equatable {
   List<Object?> get props => [];
 }
 
-class BusesInicial extends BusesState {}
+class ShowSearchBusFieldLoaded extends BusesState {
+  final bool? showAutoCompleteBusName;
 
-class BusesLoading extends BusesState {}
+  const ShowSearchBusFieldLoaded({required this.showAutoCompleteBusName});
+
+  @override
+  List<Object?> get props => [showAutoCompleteBusName];
+}
+
+class ShowSearchBusFieldLoading extends BusesState {
+  const ShowSearchBusFieldLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ShowSearchLocationBusFieldLoaded extends BusesState {
+  final bool? showAutoCompleteBusLocation;
+
+  const ShowSearchLocationBusFieldLoaded(
+      {required this.showAutoCompleteBusLocation});
+
+  @override
+  List<Object?> get props => [showAutoCompleteBusLocation];
+}
+
+class ShowSearchLocationBusFieldLoading extends BusesState {
+  const ShowSearchLocationBusFieldLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class BusesInicial extends BusesState {
+  const BusesInicial();
+}
+
+class BusesLoading extends BusesState {
+  const BusesLoading();
+}
 
 class BusesLoaded extends BusesState {
   final String tipoBusqueda;
@@ -29,4 +66,11 @@ class BusesError extends BusesState {
 
   @override
   List<Object?> get props => [mensaje];
+}
+
+class SetShowSearchLoaded extends BusesState {
+  const SetShowSearchLoaded();
+
+  @override
+  List<Object?> get props => [];
 }

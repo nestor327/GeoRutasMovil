@@ -56,17 +56,6 @@ class CompactSearchBox extends StatelessWidget {
           titulo: label,
           onTap: onTap,
         )),
-        // ElevatedButton.icon(
-        //   style: ElevatedButton.styleFrom(
-        //     backgroundColor: Colors.blueAccent,
-        //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        //     shape:
-        //         RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        //   ),
-        //   onPressed: onTap,
-        //   icon: const Icon(Icons.my_location, size: 16),
-        //   label: const Text("Mi ubicación", style: TextStyle(fontSize: 12)),
-        // ),
       ],
     );
   }

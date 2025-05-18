@@ -12,12 +12,6 @@ class AutocompleteTextField extends StatefulWidget {
   final VoidCallback onTap;
 
   AutocompleteTextField({super.key, required this.titulo, required this.onTap});
-  // const AutocompleteTextField({
-  //   Key? key,
-  //   required String titulo,
-  //   required VoidCallback onTap,
-  //   required this.titulo,
-  // }) : super(key: key);
 
   @override
   State<AutocompleteTextField> createState() => _AutocompleteTextFieldState();
@@ -38,6 +32,9 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
     try {
       print("El focus activo es: ${focusActivo}");
       if (input.isEmpty || input.length <= 3 || !focusActivo) {
+        setState(() {
+          listOfLocation = [];
+        });
         return;
       }
       String bassedUrl =
@@ -53,7 +50,6 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
       if (response.statusCode == 200) {
         setState(() {
           listOfLocation = json.decode(response.body)['predictions'];
-          print(listOfLocation[0]);
         });
       }
     } catch (e) {
@@ -127,9 +123,6 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
           });
         }
         _focusNode.unfocus();
-        // setState(() {
-        //   focusActivo = false;
-        // });
 
         print('Latitude: $lat, Longitude: $lng');
       } else {

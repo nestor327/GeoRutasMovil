@@ -6,17 +6,32 @@ import 'buses_event.dart';
 import 'buses_state.dart';
 
 class BusesBloc extends Bloc<BusesEvent, BusesState> {
-  BusesBloc() : super(BusesInicial()) {
+  BusesBloc() : super(const BusesInicial()) {
     on<CargarBuses>(_onCargarBuses);
+
+    on<SetShowSearchBusField>((event, emit) async {
+      print("Se esta enviando el datos");
+      emit(const ShowSearchBusFieldLoading());
+      emit(ShowSearchBusFieldLoaded(
+        showAutoCompleteBusName: event.showSearchBusField,
+      ));
+    });
+
+    on<SetShowSearchBusLocationField>((event, emit) async {
+      print("Se esta enviando el datos de mierda");
+      emit(const ShowSearchLocationBusFieldLoading());
+      emit(ShowSearchLocationBusFieldLoaded(
+        showAutoCompleteBusLocation: event.showSearchBusLocationField,
+      ));
+    });
   }
 
   Future<void> _onCargarBuses(
       CargarBuses event, Emitter<BusesState> emit) async {
-    emit(BusesLoading());
+    emit(const BusesLoading());
 
     try {
       // Simulación de carga
-      await Future.delayed(Duration(seconds: 2));
       final Dio dio = Dio();
 
       // Puedes reemplazar esto con una llamada real a una API o base de datos
@@ -55,7 +70,7 @@ class BusesBloc extends Bloc<BusesEvent, BusesState> {
         print("El tipo de busqueda fue ${event.tipoBusqueda}");
       }
     } catch (e) {
-      emit(BusesError('Error al cargar los buses'));
+      emit(const BusesError('Error al cargar los buses'));
     }
   }
 }

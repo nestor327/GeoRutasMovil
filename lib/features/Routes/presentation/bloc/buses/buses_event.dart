@@ -15,3 +15,19 @@ class CargarBuses extends BusesEvent {
   @override
   List<Object?> get props => [tipoBusqueda];
 }
+
+class SetShowSearchBusField extends BusesEvent {
+  final bool showSearchBusField;
+  const SetShowSearchBusField(this.showSearchBusField);
+
+  @override
+  List<Object?> get props => [showSearchBusField];
+}
+
+class SetShowSearchBusLocationField extends BusesEvent {
+  final bool showSearchBusLocationField;
+  const SetShowSearchBusLocationField(this.showSearchBusLocationField);
+
+  @override
+  List<Object?> get props => [showSearchBusLocationField];
+}
