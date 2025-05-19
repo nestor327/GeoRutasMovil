@@ -58,10 +58,10 @@ final class GetBusesByNameFailure extends RouteState {
 final class GetBusesByLocationLoading extends RouteState {}
 
 final class GetBusesByLocationSuccess extends RouteState {
-  final List<Bus> response;
-  GetBusesByLocationSuccess({required this.response});
+  final List<Bus> buses;
+  GetBusesByLocationSuccess({required this.buses});
   @override
-  List<Object> get props => [response];
+  List<Object> get props => [buses];
 }
 
 final class GetBusesByLocationFailure extends RouteState {

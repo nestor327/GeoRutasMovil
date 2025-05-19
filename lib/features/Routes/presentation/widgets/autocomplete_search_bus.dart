@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_by_bus_id_request.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import '../../../../shared/utils/env.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AutocompleteSearchBus extends StatefulWidget {
   final VoidCallback onBusName;
@@ -210,6 +213,18 @@ class _AutocompleteSearchBusState extends State<AutocompleteSearchBus> {
                                                       .Name
                                                       .substring(0, 25);
                                           _focusNode.unfocus();
+                                          context.read<RouteLocationBloc>().add(
+                                              GetCoodintateRouteByBusIdEvent(
+                                                  request:
+                                                      new GetCoordinateByBusIdRequest(
+                                                          busId: listOfLocation[
+                                                                  index]
+                                                              .Id,
+                                                          weekDayId:
+                                                              DateTime.now()
+                                                                  .weekday,
+                                                          time: TimeOfDay
+                                                              .now())));
                                           // getCoordinatesFromPlaceId(
                                           //     listOfLocation[index]["place_id"],
                                           //     listOfLocation[index]

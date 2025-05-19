@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<LatLng> _polylineCoordinates = [];
   bool _showSearchPanel = false;
   bool _showMenuList = false;
+  bool _showMenuListWithBuses = false;
   bool _showAutoCompleteBusName = false;
   int _selectedNavegationIndex = 0;
   bool _showAutoCompleteBusLocation = false;
@@ -32,34 +33,36 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // var _showCoordinates = false;
 
-    return BlocBuilder<RouteLocationBloc, RouteLocationState>(
+    return BlocBuilder<RouteLocationBloc, RouteLogState>(
         builder: (contex, state) {
       Set<Marker> markers = {};
 
-      if (state.originLat != null && state.originLng != null) {
-        print("El origen fue: ${state.originLat!} + ${state.originLng!}");
+      if (state is RouteLocationState) {
+        if (state.originLat != null && state.originLng != null) {
+          print("El origen fue: ${state.originLat!} + ${state.originLng!}");
 
-        markers.add(
-          Marker(
-            markerId: MarkerId('origin'),
-            position: LatLng(state.originLat!, state.originLng!),
-            infoWindow: InfoWindow(title: 'Origen'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueGreen),
-          ),
-        );
-      }
+          markers.add(
+            Marker(
+              markerId: MarkerId('origin'),
+              position: LatLng(state.originLat!, state.originLng!),
+              infoWindow: InfoWindow(title: 'Origen'),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueGreen),
+            ),
+          );
+        }
 
-      if (state.destinationLat != null && state.destinationLng != null) {
-        markers.add(
-          Marker(
-            markerId: MarkerId('destination'),
-            position: LatLng(state.destinationLat!, state.destinationLng!),
-            infoWindow: InfoWindow(title: 'Destino'),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          ),
-        );
+        if (state.destinationLat != null && state.destinationLng != null) {
+          markers.add(
+            Marker(
+              markerId: MarkerId('destination'),
+              position: LatLng(state.destinationLat!, state.destinationLng!),
+              infoWindow: InfoWindow(title: 'Destino'),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueRed),
+            ),
+          );
+        }
       }
 
       void miFuncion() {
@@ -78,8 +81,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     }).toList();
                   });
                 }
+                if (state is GetBusesByLocationLoading) {
+                  setState(() {
+                    _showMenuListWithBuses = true;
+                  });
+                }
+                if (state is GetBusesByLocationSuccess) {
+                  print(
+                      "La mierda de buses por ubicacion se completo con exito");
+                  setState(() {
+                    _showMenuListWithBuses = true;
+                  });
+                }
               },
             ),
+            BlocListener<RouteLocationBloc, RouteLogState>(
+                listener: (contex, state) {
+              if (state is GetCoordinateRouteByBusIdLoaded) {
+                print(
+                    "Se actualizo la meirda de las coordenadas ${state.coordinates.length}");
+                setState(() {
+                  _polylineCoordinates = state.coordinates.map((toElement) {
+                    return LatLng(toElement!.Latitude, toElement!.Longitude);
+                  }).toList();
+                });
+              }
+            }),
             BlocListener<BusesBloc, BusesState>(
               listener: (context, state) {
                 if (state is ShowSearchBusFieldLoaded) {
@@ -137,9 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   CompactSearchBox(
                       onMyLocationDestino: miFuncion,
                       onMyLocationOrigen: miFuncion),
-                if (_showMenuList &&
-                    !_showAutoCompleteBusName &&
-                    !_showAutoCompleteBusLocation)
+                if ((_showMenuList &&
+                        !_showAutoCompleteBusName &&
+                        !_showAutoCompleteBusLocation) ||
+                    (_showMenuListWithBuses && _showAutoCompleteBusLocation))
                   BusMenuWidget(),
                 if (_showAutoCompleteBusName)
                   AutocompleteSearchBus(
@@ -169,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _showAutoCompleteBusName = false;
                     _selectedNavegationIndex = 0;
                     _showAutoCompleteBusLocation = false;
+                    _showMenuListWithBuses = false;
                   });
                 } else if (index == 1) {
                   setState(() {
@@ -177,6 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _showAutoCompleteBusName = false;
                     _selectedNavegationIndex = 1;
                     _showAutoCompleteBusLocation = false;
+                    _showMenuListWithBuses = false;
                   });
                 } else {
                   setState(() {
@@ -185,6 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _showAutoCompleteBusName = false;
                     _selectedNavegationIndex = index;
                     _showAutoCompleteBusLocation = false;
+                    _showMenuListWithBuses = false;
                   });
                 }
               },

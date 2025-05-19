@@ -6,6 +6,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_name_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_by_bus_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_routes_by_schedule_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinates_between_stops_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
@@ -36,4 +37,6 @@ abstract class GeoRutasRepository {
       GetStopByScheduleIdRequest request);
   Future<Either<Failure, TripPaginated>> GetTripsByLocation(
       GetTripsByLocationRequest request);
+  Future<Either<Failure, List<Coordinate>>> GetCoordinatesByBusId(
+      GetCoordinateByBusIdRequest request);
 }

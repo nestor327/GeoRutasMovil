@@ -92,7 +92,7 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
 
       response.fold(
           (f) => emit(GetBusesByLocationFailure(errorMessage: "SignUp Fail")),
-          (success) => emit(GetBusesByLocationSuccess(response: success)));
+          (success) => emit(GetBusesByLocationSuccess(buses: success)));
     });
 
     on<GetCoordinateRouteByScheduleIdEvent>((event, emit) async {
