@@ -8,6 +8,7 @@ import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_name_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_by_bus_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_routes_by_schedule_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinates_between_stops_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
@@ -149,6 +150,20 @@ class GeorutasRepositoryImpl implements GeoRutasRepository {
       GetTripsByLocationRequest request) async {
     try {
       final response = await geoRutasApiDataSource.GetTripsByLocation(request);
+
+      return response.fold(
+          (_) => left(ServerFailure()), (reset) => Right(reset));
+    } catch (err) {
+      return left(LocalFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Coordinate>>> GetCoordinatesByBusId(
+      GetCoordinateByBusIdRequest request) async {
+    try {
+      final response =
+          await geoRutasApiDataSource.GetCoordinatesByBusId(request);
 
       return response.fold(
           (_) => left(ServerFailure()), (reset) => Right(reset));

@@ -24,3 +24,11 @@ class SetDestinationCoordinates extends RouteLocationEvent {
   @override
   List<Object?> get props => [lat, lng];
 }
+
+class GetCoodintateRouteByBusIdEvent extends RouteLocationEvent {
+  final GetCoordinateByBusIdRequest request;
+
+  GetCoodintateRouteByBusIdEvent({required this.request});
+  @override
+  List<Object?> get props => [request];
+}

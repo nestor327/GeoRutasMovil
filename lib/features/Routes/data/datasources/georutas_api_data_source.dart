@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Routes/data/models/bus_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/bus_type_model.dart';
@@ -12,6 +12,7 @@ import 'package:georutasmovil/features/Routes/data/models/trip_paginated_model.d
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_name_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_by_bus_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_routes_by_schedule_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinates_between_stops_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_schedule_by_bus_id_week_day_and_hour_request.dart';
@@ -40,6 +41,8 @@ abstract class GeoRutasApiDataSource {
       GetStopByScheduleIdRequest request);
   Future<Either<Failure, TripPaginatedModel>> GetTripsByLocation(
       GetTripsByLocationRequest request);
+  Future<Either<Failure, List<CoordinateModel>>> GetCoordinatesByBusId(
+      GetCoordinateByBusIdRequest request);
 }
 
 class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
@@ -76,20 +79,30 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   Future<Either<Failure, List<BusModel>>> GetBusesByLocation(
       GetBusesByLocationRequest request) async {
     try {
-      final resp = await dio.post(
-        'http://192.168.1.14:5000/v1/auth/login',
+      TimeOfDay time = TimeOfDay(hour: 12, minute: 12);
+
+      String formattedTime =
+          '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+
+      String encodedTime = Uri.encodeComponent(formattedTime);
+
+      String url =
+          'http://192.168.1.14:5005/v1/bus/buses-by-location?ratioInMeters=${request.RatioInMeters}&weekDayId=${request.WeekDayId}&timeZoneId=${request.TimeZoneId}&latitude=${request.Latitude}&longitude=${request.Longitude}&time=${encodedTime}';
+
+      final resp = await dio.get(
+        url,
         options: Options(
           headers: {
             'accept': 'text/plain',
             'X-Language': 'es',
             'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
           },
         ),
       );
 
       if (resp.statusCode == 200) {
-        dynamic jsonParse = json.decode(resp.data);
-        final List<BusModel> busTypeModels = BusModel.parseEntidades(jsonParse);
+        final List<BusModel> busTypeModels = BusModel.parseEntidades(resp.data);
         return Right(busTypeModels);
       } else {
         return Left(ServerFailure());
@@ -315,6 +328,43 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
         dynamic jsonParse = json.decode(resp.data);
         final TripPaginatedModel coordinatesModels =
             TripPaginatedModel.fromJson(jsonParse);
+        return Right(coordinatesModels);
+      } else {
+        return Left(ServerFailure());
+      }
+    } catch (Error) {
+      return Left(LocalFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CoordinateModel>>> GetCoordinatesByBusId(
+      GetCoordinateByBusIdRequest request) async {
+    try {
+      TimeOfDay time = TimeOfDay(hour: 12, minute: 12);
+
+      String formattedTime =
+          '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+
+      String encodedTime = Uri.encodeComponent(formattedTime);
+
+      String url =
+          'http://192.168.1.14:5005/v1/coordinate-by-bus?busId=${request.busId}&weekDayId=${request.weekDayId}&time=${encodedTime}';
+      final resp = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            'accept': 'text/plain',
+            'X-Language': 'es',
+            'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
+          },
+        ),
+      );
+
+      if (resp.statusCode == 200) {
+        final List<CoordinateModel> coordinatesModels =
+            CoordinateModel.parseEntidades(resp.data);
         return Right(coordinatesModels);
       } else {
         return Left(ServerFailure());

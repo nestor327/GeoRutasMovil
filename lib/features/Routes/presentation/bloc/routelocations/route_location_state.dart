@@ -1,6 +1,13 @@
 part of 'route_locations_bloc.dart';
 
-class RouteLocationState extends Equatable {
+abstract class RouteLogState extends Equatable {
+  const RouteLogState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class RouteLocationState extends RouteLogState {
   final double? originLat;
   final double? originLng;
   final double? destinationLat;
@@ -30,4 +37,36 @@ class RouteLocationState extends Equatable {
   @override
   List<Object?> get props =>
       [originLat, originLng, destinationLat, destinationLng];
+}
+
+class RouteLocationInit extends RouteLogState {
+  const RouteLocationInit();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class GetCoordinateRouteByBusIdLoaded extends RouteLogState {
+  final List<Coordinate?> coordinates;
+
+  const GetCoordinateRouteByBusIdLoaded({required this.coordinates});
+
+  @override
+  List<Object?> get props => [coordinates];
+}
+
+class GetCoordinateRouteByBusIdLoading extends RouteLogState {
+  const GetCoordinateRouteByBusIdLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class GetCoordinateRouteByBusIdError extends RouteLogState {
+  final String error;
+
+  const GetCoordinateRouteByBusIdError({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }

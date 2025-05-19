@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
+import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/shared/utils/env.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AutocompleteSearchBusByLocation extends StatefulWidget {
   final VoidCallback onBusLocation;
@@ -93,6 +96,21 @@ class _AutocompleteSearchBusByLocationState
         final location = data['result']['geometry']['location'];
         final lat = location['lat'];
         final lng = location['lng'];
+
+        setState(() {
+          listOfLocation = [];
+          searchController.text = description.length <= 26
+              ? description
+              : description.substring(0, 25);
+        });
+        context.read<RouteBloc>().add(GetBusesByLocationEvent(
+            request: GetBusesByLocationRequest(
+                RatioInMeters: 300,
+                WeekDayId: DateTime.now().weekday,
+                TimeZoneId: 1,
+                Latitude: lat,
+                Longitude: lng,
+                Time: DateTime.now())));
 
         // if (widget.titulo == "Busca un origen") {
         //   print("SE GUARDO EL ORIGIN");

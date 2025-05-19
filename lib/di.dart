@@ -17,6 +17,7 @@ import 'package:georutasmovil/features/Routes/domain/use_cases/get_bus_types_use
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_buses_by_type_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_coordinate_routes_by_schedule_id_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_coordinates_between_stops_use_case.dart';
+import 'package:georutasmovil/features/Routes/domain/use_cases/get_coordinates_by_bus_id_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_schedule_by_bus_id_and_week_day_and_time_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_stop_by_range_use_case.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_stops_by_schedule_id_use_case.dart';
@@ -94,12 +95,14 @@ Future<void> init() async {
       () => GetStopsByScheduleIdUseCase(geoRutasRepository: di()));
   di.registerLazySingleton(
       () => GetTripsByLocationUseCase(geoRutasRepository: di()));
+  di.registerLazySingleton(
+      () => GetCoordinatesByBusIdUseCase(geoRutasRepository: di()));
 
   //Bloc
   di.registerFactory(() => GetCoordinatesBloc(di(), di()));
   di.registerFactory(() => UserBloc(di(), di(), di(), di(), di()));
   di.registerFactory(() =>
       RouteBloc(di(), di(), di(), di(), di(), di(), di(), di(), di(), di()));
-  di.registerFactory(() => RouteLocationBloc());
+  di.registerFactory(() => RouteLocationBloc(di()));
   di.registerFactory(() => BusesBloc());
 }
