@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final LatLng cityCoordinates = const LatLng(12.728850, -86.124645);
   List<LatLng> _polylineCoordinates = [];
   bool _showSearchPanel = false;
@@ -28,6 +28,42 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _showAutoCompleteBusName = false;
   int _selectedNavegationIndex = 0;
   bool _showAutoCompleteBusLocation = false;
+
+  bool _keyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    final newValue = bottomInset > 0.0;
+    if (newValue != _keyboardVisible) {
+      setState(() {
+        _keyboardVisible = newValue;
+      });
+
+      // Puedes hacer algo aquí cuando se abre o cierra el teclado
+      if (_keyboardVisible) {
+        setState(() {
+          _showMenuList = false;
+          _showMenuListWithBuses = false;
+        });
+        print("Teclado abierto");
+      } else {
+        print("Teclado cerrado");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     "Se actualizo la meirda de las coordenadas ${state.coordinates.length}");
                 setState(() {
                   _polylineCoordinates = state.coordinates.map((toElement) {
-                    return LatLng(toElement!.Latitude, toElement!.Longitude);
+                    return LatLng(toElement!.Latitude, toElement.Longitude);
                   }).toList();
                 });
               }
@@ -130,6 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
             body: Stack(
               children: [
                 GoogleMap(
+                  zoomControlsEnabled: false,
                   onTap: (argument) => {
                     setState(() {
                       _showSearchPanel = false;
