@@ -24,10 +24,22 @@ class SetShowSearchBusField extends BusesEvent {
   List<Object?> get props => [showSearchBusField];
 }
 
-class SetShowSearchBusLocationField extends BusesEvent {
+class SetShowSearchBusLocationFieldEvent extends BusesEvent {
   final bool showSearchBusLocationField;
-  const SetShowSearchBusLocationField(this.showSearchBusLocationField);
+  const SetShowSearchBusLocationFieldEvent(this.showSearchBusLocationField);
 
   @override
   List<Object?> get props => [showSearchBusLocationField];
+}
+
+class SetShowBusStopsLocationFieldEvent extends BusesEvent {
+  final bool setShowBusStopsLocationFieldRight;
+  final bool setShowBusStopsLocationFieldLeft;
+  const SetShowBusStopsLocationFieldEvent(
+      this.setShowBusStopsLocationFieldRight,
+      this.setShowBusStopsLocationFieldLeft);
+
+  @override
+  List<Object?> get props =>
+      [setShowBusStopsLocationFieldRight, setShowBusStopsLocationFieldLeft];
 }

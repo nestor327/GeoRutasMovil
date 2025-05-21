@@ -41,6 +41,26 @@ class ShowSearchLocationBusFieldLoading extends BusesState {
   List<Object?> get props => [];
 }
 
+class SetShowSearchBusStopLocationFieldLoaded extends BusesState {
+  final bool? SetShowSearchBusLocationFieldRight;
+  final bool? SetShowSearchBusLocationFieldLeft;
+
+  const SetShowSearchBusStopLocationFieldLoaded(
+      {required this.SetShowSearchBusLocationFieldLeft,
+      required this.SetShowSearchBusLocationFieldRight});
+
+  @override
+  List<Object?> get props =>
+      [SetShowSearchBusLocationFieldLeft, SetShowSearchBusLocationFieldRight];
+}
+
+class SetShowSearchBusStopLocationFieldLoading extends BusesState {
+  const SetShowSearchBusStopLocationFieldLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class BusesInicial extends BusesState {
   const BusesInicial();
 }
