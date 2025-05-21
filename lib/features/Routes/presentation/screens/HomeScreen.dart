@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_state.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenuWidget.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/Map/toggling_stop_buttons.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/autocomplete_search_bus.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/autocomplete_search_bus_by_location.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/compact_search_box.dart';
@@ -22,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final LatLng cityCoordinates = const LatLng(12.728850, -86.124645);
   List<LatLng> _polylineCoordinates = [];
+  List<Coordinate> _coordinatesList = [];
   bool _showSearchPanel = false;
   bool _showMenuList = false;
   bool _showMenuListWithBuses = false;
@@ -112,6 +115,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               listener: (context, state) {
                 if (state is GetCoordinateRouteByScheduleIdSuccess) {
                   setState(() {
+                    _coordinatesList = state.response;
+
                     _polylineCoordinates = state.response.map((toElement) {
                       return LatLng(toElement.Latitude, toElement.Longitude);
                     }).toList();
@@ -158,6 +163,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     _showAutoCompleteBusLocation =
                         state.showAutoCompleteBusLocation!;
                   });
+                }
+
+                if (state is SetShowSearchBusStopLocationFieldLoaded &&
+                    _polylineCoordinates.length > 0) {
+                  // _polylineCoordinates=_coordinatesList.where((element) => element)
                 }
               },
             )
@@ -211,7 +221,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     onBusName: miFuncion,
                   ),
                 if (_showAutoCompleteBusLocation)
-                  AutocompleteSearchBusByLocation(onBusLocation: miFuncion)
+                  AutocompleteSearchBusByLocation(onBusLocation: miFuncion),
+                if (_polylineCoordinates.length > 0) TogglingStopButtons()
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(

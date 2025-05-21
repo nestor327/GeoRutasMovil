@@ -17,12 +17,22 @@ class BusesBloc extends Bloc<BusesEvent, BusesState> {
       ));
     });
 
-    on<SetShowSearchBusLocationField>((event, emit) async {
+    on<SetShowSearchBusLocationFieldEvent>((event, emit) async {
       print("Se esta enviando el datos de mierda");
       emit(const ShowSearchLocationBusFieldLoading());
       emit(ShowSearchLocationBusFieldLoaded(
         showAutoCompleteBusLocation: event.showSearchBusLocationField,
       ));
+    });
+
+    on<SetShowBusStopsLocationFieldEvent>((event, emit) async {
+      print("Se esta enviando el datos de mierda");
+      emit(const SetShowSearchBusStopLocationFieldLoading());
+      emit(SetShowSearchBusStopLocationFieldLoaded(
+          SetShowSearchBusLocationFieldLeft:
+              event.setShowBusStopsLocationFieldLeft,
+          SetShowSearchBusLocationFieldRight:
+              event.setShowBusStopsLocationFieldRight));
     });
   }
 

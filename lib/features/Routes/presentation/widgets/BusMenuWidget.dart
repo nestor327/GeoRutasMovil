@@ -231,9 +231,8 @@ class _BusMenuWidgetState extends State<BusMenuWidget> {
                             height: 60,
                             child: ElevatedButton(
                               onPressed: () {
-                                context
-                                    .read<BusesBloc>()
-                                    .add(SetShowSearchBusLocationField(true));
+                                context.read<BusesBloc>().add(
+                                    SetShowSearchBusLocationFieldEvent(true));
                               },
                               child: const Text('Ubicación'),
                             ),
