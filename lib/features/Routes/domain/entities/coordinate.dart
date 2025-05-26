@@ -12,4 +12,14 @@ class Coordinate {
         Latitude: json["latitude"],
         Longitude: json["longitude"]);
   }
+
+  static List<Coordinate> parseEntidades(dynamic jsonData) {
+    if (jsonData is List) {
+      return jsonData.map((item) => Coordinate.fromJson(item)).toList();
+    } else if (jsonData is Map<String, dynamic>) {
+      return [Coordinate.fromJson(jsonData)];
+    } else {
+      return [];
+    }
+  }
 }

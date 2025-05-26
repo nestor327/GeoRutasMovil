@@ -37,11 +37,13 @@ class _TogglingStopButtonsState extends State<TogglingStopButtons> {
                 color: Colors.green,
                 toggled: isFirstToggled,
                 onPressed: () {
+                  context.read<BusesBloc>().add(
+                      SetShowBusStopsLocationFieldEvent(
+                          !isSecondToggled, isFirstToggled));
+                  print(
+                      "Los putos valores que se envian son: ${!isFirstToggled} + ${isSecondToggled}");
                   setState(() {
                     isFirstToggled = !isFirstToggled;
-                    context.read<BusesBloc>().add(
-                        SetShowBusStopsLocationFieldEvent(
-                            isSecondToggled, isFirstToggled));
                   });
                 },
               ),
@@ -52,11 +54,11 @@ class _TogglingStopButtonsState extends State<TogglingStopButtons> {
                 color: Colors.blue,
                 toggled: isSecondToggled,
                 onPressed: () {
+                  context.read<BusesBloc>().add(
+                      SetShowBusStopsLocationFieldEvent(
+                          isSecondToggled, !isFirstToggled));
                   setState(() {
                     isSecondToggled = !isSecondToggled;
-                    context.read<BusesBloc>().add(
-                        SetShowBusStopsLocationFieldEvent(
-                            isSecondToggled, isFirstToggled));
                   });
                 },
               ),

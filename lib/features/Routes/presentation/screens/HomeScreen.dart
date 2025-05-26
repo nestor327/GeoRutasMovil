@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/coordinate_detail.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_stop_by_schedule_id_request.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/stop.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/buses/buses_state.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/route_locations_bloc.dart';
@@ -24,13 +26,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final LatLng cityCoordinates = const LatLng(12.728850, -86.124645);
   List<LatLng> _polylineCoordinates = [];
-  List<Coordinate> _coordinatesList = [];
+  Set<Marker> stops = {};
+  List<Stop> nativeStops = [];
+  late BitmapDescriptor busIconRight;
+  late BitmapDescriptor busIconLeft;
   bool _showSearchPanel = false;
   bool _showMenuList = false;
   bool _showMenuListWithBuses = false;
   bool _showAutoCompleteBusName = false;
   int _selectedNavegationIndex = 0;
   bool _showAutoCompleteBusLocation = false;
+  CoordinateDetails coordinateDetails = new CoordinateDetails(
+      ScheduleId: 0,
+      IdCoordinateNorthSouthInitial: 0,
+      IdCoordinateSouthNorthEnd: 0,
+      IdStopNorthSouthInitial: 0,
+      IdStopSouthNorthEnd: 0,
+      coordinates: []);
 
   bool _keyboardVisible = false;
 
@@ -38,6 +50,19 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _loadBusIcon();
+  }
+
+  Future<void> _loadBusIcon() async {
+    busIconLeft = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(48, 48)),
+      'assets/images/leftStop.png',
+    );
+    busIconRight = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(48, 48)),
+      'assets/images/rightStop.png',
+    );
+    setState(() {});
   }
 
   @override
@@ -115,8 +140,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               listener: (context, state) {
                 if (state is GetCoordinateRouteByScheduleIdSuccess) {
                   setState(() {
-                    _coordinatesList = state.response;
-
                     _polylineCoordinates = state.response.map((toElement) {
                       return LatLng(toElement.Latitude, toElement.Longitude);
                     }).toList();
@@ -134,16 +157,42 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     _showMenuListWithBuses = true;
                   });
                 }
+                if (state is GetStopsByScheduleIdSuccess) {
+                  print(
+                      "SE ENCONTRARON VARIAS PARADAS ${state.response.length}");
+                  setState(() {
+                    nativeStops = state.response;
+                    stops = state.response.map((el) {
+                      return Marker(
+                        markerId: MarkerId(el.Id.toString()),
+                        position: LatLng(el.Latitude, el.Longitude),
+                        infoWindow:
+                            InfoWindow(title: 'Stop ' + el.Id.toString()),
+                        icon: el.Id > coordinateDetails.IdStopSouthNorthEnd
+                            ? busIconRight
+                            : busIconLeft,
+                      );
+                    }).toSet();
+                  });
+                }
               },
             ),
             BlocListener<RouteLocationBloc, RouteLogState>(
                 listener: (contex, state) {
               if (state is GetCoordinateRouteByBusIdLoaded) {
-                print(
-                    "Se actualizo la meirda de las coordenadas ${state.coordinates.length}");
+                context.read<RouteBloc>().add(GetStopsByScheduleIdEvent(
+                    request: GetStopByScheduleIdRequest(
+                        ScheduleId: state.coordinates!.ScheduleId)));
+
                 setState(() {
-                  _polylineCoordinates = state.coordinates.map((toElement) {
-                    return LatLng(toElement!.Latitude, toElement.Longitude);
+                  coordinateDetails = state.coordinates!;
+                });
+                print(
+                    "Se actualizo la meirda de las coordenadas ${state.coordinates?.coordinates.length}");
+                setState(() {
+                  _polylineCoordinates =
+                      state.coordinates!.coordinates.map((toElement) {
+                    return LatLng(toElement.Latitude, toElement.Longitude);
                   }).toList();
                 });
               }
@@ -165,9 +214,96 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   });
                 }
 
-                if (state is SetShowSearchBusStopLocationFieldLoaded &&
-                    _polylineCoordinates.length > 0) {
-                  // _polylineCoordinates=_coordinatesList.where((element) => element)
+                if (state is SetShowSearchBusStopLocationFieldLoaded) {
+                  print(
+                      "Se esta actualizando la mierda ${state.SetShowSearchBusLocationFieldLeft}+ ${state.SetShowSearchBusLocationFieldRight}");
+
+                  if (state.SetShowSearchBusLocationFieldLeft == true &&
+                      state.SetShowSearchBusLocationFieldRight == false) {
+                    print("Entro al 1");
+                    setState(() {
+                      _polylineCoordinates = coordinateDetails.coordinates
+                          .where((el) =>
+                              el.Id <=
+                              coordinateDetails.IdCoordinateSouthNorthEnd)
+                          .map((toElement) {
+                        return LatLng(toElement.Latitude, toElement.Longitude);
+                      }).toList();
+
+                      stops = nativeStops
+                          .where((stop) =>
+                              stop.Id <= coordinateDetails.IdStopSouthNorthEnd)
+                          .map((el) {
+                        return Marker(
+                          markerId: MarkerId(el.Id.toString()),
+                          position: LatLng(el.Latitude, el.Longitude),
+                          infoWindow:
+                              InfoWindow(title: 'Stop ' + el.Id.toString()),
+                          icon: el.Id > coordinateDetails.IdStopSouthNorthEnd
+                              ? busIconRight
+                              : busIconLeft,
+                        );
+                      }).toSet();
+                    });
+                  } else if (state.SetShowSearchBusLocationFieldLeft == false &&
+                      state.SetShowSearchBusLocationFieldRight == true) {
+                    print("Entro al 2");
+                    setState(() {
+                      _polylineCoordinates = coordinateDetails.coordinates
+                          .where((el) =>
+                              el.Id >=
+                                  coordinateDetails
+                                      .IdCoordinateNorthSouthInitial &&
+                              coordinateDetails.IdCoordinateNorthSouthInitial >
+                                  0)
+                          .map((toElement) {
+                        return LatLng(toElement.Latitude, toElement.Longitude);
+                      }).toList();
+
+                      stops = nativeStops
+                          .where((stop) =>
+                              stop.Id >=
+                                  coordinateDetails.IdStopNorthSouthInitial &&
+                              coordinateDetails.IdStopNorthSouthInitial > 0)
+                          .map((el) {
+                        return Marker(
+                          markerId: MarkerId(el.Id.toString()),
+                          position: LatLng(el.Latitude, el.Longitude),
+                          infoWindow:
+                              InfoWindow(title: 'Stop ' + el.Id.toString()),
+                          icon: el.Id > coordinateDetails.IdStopSouthNorthEnd
+                              ? busIconRight
+                              : busIconLeft,
+                        );
+                      }).toSet();
+                    });
+                  } else if (state.SetShowSearchBusLocationFieldLeft == true &&
+                      state.SetShowSearchBusLocationFieldRight == true) {
+                    print("Entro al 3");
+                    setState(() {
+                      _polylineCoordinates =
+                          coordinateDetails.coordinates.map((toElement) {
+                        return LatLng(toElement.Latitude, toElement.Longitude);
+                      }).toList();
+                      stops = nativeStops.map((el) {
+                        return Marker(
+                          markerId: MarkerId(el.Id.toString()),
+                          position: LatLng(el.Latitude, el.Longitude),
+                          infoWindow:
+                              InfoWindow(title: 'Stop ' + el.Id.toString()),
+                          icon: el.Id > coordinateDetails.IdStopSouthNorthEnd
+                              ? busIconRight
+                              : busIconLeft,
+                        );
+                      }).toSet();
+                    });
+                  } else {
+                    print("Entro al 4");
+                    setState(() {
+                      _polylineCoordinates = [];
+                      stops = {};
+                    });
+                  }
                 }
               },
             )
@@ -187,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   },
                   initialCameraPosition:
                       CameraPosition(target: cityCoordinates, zoom: 16),
-                  markers: markers,
+                  markers: (stops.length > 0) ? stops : markers,
                   polylines: {
                     if (_polylineCoordinates.length > 0)
                       Polyline(
@@ -222,7 +358,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ),
                 if (_showAutoCompleteBusLocation)
                   AutocompleteSearchBusByLocation(onBusLocation: miFuncion),
-                if (_polylineCoordinates.length > 0) TogglingStopButtons()
+                if (_polylineCoordinates.length > 0 ||
+                    coordinateDetails.coordinates.isNotEmpty)
+                  TogglingStopButtons()
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -255,6 +393,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     _selectedNavegationIndex = 1;
                     _showAutoCompleteBusLocation = false;
                     _showMenuListWithBuses = false;
+                    coordinateDetails.coordinates = [];
+                    _polylineCoordinates = [];
                   });
                 } else {
                   setState(() {
@@ -264,6 +404,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     _selectedNavegationIndex = index;
                     _showAutoCompleteBusLocation = false;
                     _showMenuListWithBuses = false;
+                    coordinateDetails.coordinates = [];
+                    _polylineCoordinates = [];
                   });
                 }
               },

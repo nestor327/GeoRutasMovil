@@ -47,7 +47,7 @@ class RouteLocationInit extends RouteLogState {
 }
 
 class GetCoordinateRouteByBusIdLoaded extends RouteLogState {
-  final List<Coordinate?> coordinates;
+  final CoordinateDetails? coordinates;
 
   const GetCoordinateRouteByBusIdLoaded({required this.coordinates});
 

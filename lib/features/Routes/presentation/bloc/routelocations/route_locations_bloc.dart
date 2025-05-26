@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/coordinate_detail.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_coordinate_by_bus_id_request.dart';
 import 'package:georutasmovil/features/Routes/domain/use_cases/get_coordinates_by_bus_id_use_case.dart';
 
