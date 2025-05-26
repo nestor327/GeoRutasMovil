@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Routes/data/models/bus_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/bus_type_model.dart';
+import 'package:georutasmovil/features/Routes/data/models/coordinate_details_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/coordinate_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/schedule_model.dart';
 import 'package:georutasmovil/features/Routes/data/models/stop_model.dart';
@@ -41,7 +42,7 @@ abstract class GeoRutasApiDataSource {
       GetStopByScheduleIdRequest request);
   Future<Either<Failure, TripPaginatedModel>> GetTripsByLocation(
       GetTripsByLocationRequest request);
-  Future<Either<Failure, List<CoordinateModel>>> GetCoordinatesByBusId(
+  Future<Either<Failure, CoordinateDetailsModel>> GetCoordinatesByBusId(
       GetCoordinateByBusIdRequest request);
 }
 
@@ -285,21 +286,21 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   Future<Either<Failure, List<StopModel>>> GetStopsByScheduleId(
       GetStopByScheduleIdRequest request) async {
     try {
-      final resp = await dio.post(
-        'http://192.168.1.14:5000/v1/auth/login',
+      final resp = await dio.get(
+        'http://192.168.1.14:5005/v1/stop/stop-by-schedule?scheduleId=${request.ScheduleId}',
         options: Options(
           headers: {
             'accept': 'text/plain',
             'X-Language': 'es',
             'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
           },
         ),
       );
 
       if (resp.statusCode == 200) {
-        dynamic jsonParse = json.decode(resp.data);
         final List<StopModel> coordinatesModels =
-            StopModel.parseEntidades(jsonParse);
+            StopModel.parseEntidades(resp.data);
         return Right(coordinatesModels);
       } else {
         return Left(ServerFailure());
@@ -338,7 +339,7 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   }
 
   @override
-  Future<Either<Failure, List<CoordinateModel>>> GetCoordinatesByBusId(
+  Future<Either<Failure, CoordinateDetailsModel>> GetCoordinatesByBusId(
       GetCoordinateByBusIdRequest request) async {
     try {
       TimeOfDay time = TimeOfDay(hour: 12, minute: 12);
@@ -363,8 +364,8 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
       );
 
       if (resp.statusCode == 200) {
-        final List<CoordinateModel> coordinatesModels =
-            CoordinateModel.parseEntidades(resp.data);
+        final CoordinateDetailsModel coordinatesModels =
+            CoordinateDetailsModel.fromJson(resp.data);
         return Right(coordinatesModels);
       } else {
         return Left(ServerFailure());

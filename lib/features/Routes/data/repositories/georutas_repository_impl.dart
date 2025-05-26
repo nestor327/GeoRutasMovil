@@ -5,6 +5,7 @@ import 'package:georutasmovil/features/Routes/data/models/stop_model.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus_type.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/coordinate_detail.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_name_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
@@ -159,7 +160,7 @@ class GeorutasRepositoryImpl implements GeoRutasRepository {
   }
 
   @override
-  Future<Either<Failure, List<Coordinate>>> GetCoordinatesByBusId(
+  Future<Either<Failure, CoordinateDetails>> GetCoordinatesByBusId(
       GetCoordinateByBusIdRequest request) async {
     try {
       final response =

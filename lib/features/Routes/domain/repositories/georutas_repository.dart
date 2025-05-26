@@ -3,6 +3,7 @@ import 'package:georutasmovil/core/error/Failure.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus_type.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/coordinate.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/coordinate_detail.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_location_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_name_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/get_bus_by_type_request.dart';
@@ -37,6 +38,6 @@ abstract class GeoRutasRepository {
       GetStopByScheduleIdRequest request);
   Future<Either<Failure, TripPaginated>> GetTripsByLocation(
       GetTripsByLocationRequest request);
-  Future<Either<Failure, List<Coordinate>>> GetCoordinatesByBusId(
+  Future<Either<Failure, CoordinateDetails>> GetCoordinatesByBusId(
       GetCoordinateByBusIdRequest request);
 }
