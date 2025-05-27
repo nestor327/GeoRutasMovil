@@ -314,13 +314,14 @@ class GeoRutasApiDataSourceImpl implements GeoRutasApiDataSource {
   Future<Either<Failure, TripPaginatedModel>> GetTripsByLocation(
       GetTripsByLocationRequest request) async {
     try {
-      final resp = await dio.post(
-        'http://192.168.1.14:5000/v1/auth/login',
+      final resp = await dio.get(
+        'http://192.168.1.14:5005/v1/trip/trip-by-location?fromLatitude=12&fromLongitude=12&toLatitude=12&toLongitude=12&timeZoneId=12&ratioInMeters=12&time=12%3A12&weekDayId=1&page=1&numberOfElements=1',
         options: Options(
           headers: {
             'accept': 'text/plain',
             'X-Language': 'es',
             'Content-Type': 'application/json',
+            'X-Api-Key': EnvConfig.geoRutasApyKey
           },
         ),
       );

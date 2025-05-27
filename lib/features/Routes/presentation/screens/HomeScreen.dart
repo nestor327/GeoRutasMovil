@@ -10,6 +10,7 @@ import 'package:georutasmovil/features/Routes/presentation/bloc/routelocations/r
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/BusMenuWidget.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/Map/toggling_stop_buttons.dart';
+import 'package:georutasmovil/features/Routes/presentation/widgets/RouteMenuWidget.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/autocomplete_search_bus.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/autocomplete_search_bus_by_location.dart';
 import 'package:georutasmovil/features/Routes/presentation/widgets/compact_search_box.dart';
@@ -24,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
-  final LatLng cityCoordinates = const LatLng(12.728850, -86.124645);
+  final LatLng cityCoordinates = const LatLng(12.134397, -86.235405);
   List<LatLng> _polylineCoordinates = [];
   Set<Marker> stops = {};
   List<Stop> nativeStops = [];
@@ -80,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         _keyboardVisible = newValue;
       });
 
-      // Puedes hacer algo aquí cuando se abre o cierra el teclado
       if (_keyboardVisible) {
         setState(() {
           _showMenuList = false;
@@ -95,8 +95,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // var _showCoordinates = false;
-
     return BlocBuilder<RouteLocationBloc, RouteLogState>(
         builder: (contex, state) {
       Set<Marker> markers = {};
@@ -107,9 +105,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
           markers.add(
             Marker(
-              markerId: MarkerId('origin'),
+              markerId: const MarkerId('origin'),
               position: LatLng(state.originLat!, state.originLng!),
-              infoWindow: InfoWindow(title: 'Origen'),
+              infoWindow: const InfoWindow(title: 'Origen'),
               icon: BitmapDescriptor.defaultMarkerWithHue(
                   BitmapDescriptor.hueGreen),
             ),
@@ -119,9 +117,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         if (state.destinationLat != null && state.destinationLng != null) {
           markers.add(
             Marker(
-              markerId: MarkerId('destination'),
+              markerId: const MarkerId('destination'),
               position: LatLng(state.destinationLat!, state.destinationLng!),
-              infoWindow: InfoWindow(title: 'Destino'),
+              infoWindow: const InfoWindow(title: 'Destino'),
               icon: BitmapDescriptor.defaultMarkerWithHue(
                   BitmapDescriptor.hueRed),
             ),
@@ -194,6 +192,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       state.coordinates!.coordinates.map((toElement) {
                     return LatLng(toElement.Latitude, toElement.Longitude);
                   }).toList();
+
+                  if (_polylineCoordinates.length == 0) {
+                    stops = {};
+                  }
                 });
               }
             }),
@@ -322,23 +324,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     })
                   },
                   initialCameraPosition:
-                      CameraPosition(target: cityCoordinates, zoom: 16),
+                      CameraPosition(target: cityCoordinates, zoom: 12),
                   markers: (stops.length > 0) ? stops : markers,
                   polylines: {
                     if (_polylineCoordinates.length > 0)
                       Polyline(
-                          polylineId: PolylineId("Poly1"),
+                          polylineId: const PolylineId("Poly1"),
                           color: Colors.blue,
                           points: _polylineCoordinates,
-                          width: 4),
-                    if (_polylineCoordinates.length == 0)
-                      const Polyline(
-                          polylineId: PolylineId("Poly2"),
-                          color: Colors.blue,
-                          points: [
-                            LatLng(12.742475, -86.121136),
-                            LatLng(12.729415, -86.126544)
-                          ],
                           width: 4)
                   },
                   key: Key(EnvConfig.mapApyKey),
@@ -351,16 +344,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         !_showAutoCompleteBusName &&
                         !_showAutoCompleteBusLocation) ||
                     (_showMenuListWithBuses && _showAutoCompleteBusLocation))
-                  BusMenuWidget(),
+                  const BusMenuWidget(),
                 if (_showAutoCompleteBusName)
                   AutocompleteSearchBus(
                     onBusName: miFuncion,
                   ),
                 if (_showAutoCompleteBusLocation)
                   AutocompleteSearchBusByLocation(onBusLocation: miFuncion),
-                if (_polylineCoordinates.length > 0 ||
-                    coordinateDetails.coordinates.isNotEmpty)
-                  TogglingStopButtons()
+                if ((_polylineCoordinates.length > 0 ||
+                        coordinateDetails.coordinates.isNotEmpty) &&
+                    coordinateDetails.IdCoordinateNorthSouthInitial > 0 &&
+                    coordinateDetails.IdCoordinateSouthNorthEnd > 0 &&
+                    coordinateDetails.IdStopNorthSouthInitial > 0 &&
+                    coordinateDetails.IdStopSouthNorthEnd > 0)
+                  const TogglingStopButtons(),
+                Routemenuwidget()
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -395,6 +393,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     _showMenuListWithBuses = false;
                     coordinateDetails.coordinates = [];
                     _polylineCoordinates = [];
+                    stops = {};
                   });
                 } else {
                   setState(() {
@@ -406,6 +405,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     _showMenuListWithBuses = false;
                     coordinateDetails.coordinates = [];
                     _polylineCoordinates = [];
+                    stops = {};
                   });
                 }
               },
