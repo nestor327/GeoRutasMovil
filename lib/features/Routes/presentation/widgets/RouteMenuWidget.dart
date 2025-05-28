@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/bus.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/trip.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/trip_paginated.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
 
 class Routemenuwidget extends StatefulWidget {
@@ -12,6 +14,10 @@ class Routemenuwidget extends StatefulWidget {
 
 class _RoutemenuwidgetState extends State<Routemenuwidget> {
   List<Bus> routes = [];
+  List<Trip> routesFilter = [];
+  TripPaginated tripPaginated = new TripPaginated(
+      PagingInfo: PagingInf(PerPage: 0, CurrentPage: 0, TotalRecords: 0),
+      Records: List.empty());
   bool showAcitivityIndicator = false;
 
   @override
@@ -37,6 +43,10 @@ class _RoutemenuwidgetState extends State<Routemenuwidget> {
           child: BlocBuilder<RouteBloc, RouteState>(builder: (context, state) {
             if (state is GetTripsByLocationSuccess) {
               // Cargar a las rutas
+              setState(() {
+                tripPaginated = state.response;
+                routesFilter = state.response.Records;
+              });
             }
 
             return Column(
