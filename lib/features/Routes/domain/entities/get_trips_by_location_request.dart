@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class GetTripsByLocationRequest {
   double fromLatitude;
   double fromLongitude;
@@ -5,7 +7,7 @@ class GetTripsByLocationRequest {
   double toLongitude;
   int timeZoneId;
   int ratioInMeters;
-  DateTime time;
+  TimeOfDay time;
   int WeekDayId;
   int page;
   int numberOfElements;
