@@ -100,53 +100,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return BlocBuilder<RouteLocationBloc, RouteLogState>(
         builder: (contex, state) {
       //ESTO ES UN PROBLEMA, SE DEBE DE ACTUALIZAR USANDO EL MULTIBLOCK LISTENER
-      if (state is RouteLocationState) {
-        if (state.originLat != null && state.originLng != null) {
-          print("El origen fue: ${state.originLat!} + ${state.originLng!}");
-          setState(() {
-            markers.add(
-              Marker(
-                markerId: const MarkerId('origin'),
-                position: LatLng(state.originLat!, state.originLng!),
-                infoWindow: const InfoWindow(title: 'Origen'),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
-              ),
-            );
-          });
-        }
-
-        if (state.destinationLat != null && state.destinationLng != null) {
-          setState(() {
-            markers.add(
-              Marker(
-                markerId: const MarkerId('destination'),
-                position: LatLng(state.destinationLat!, state.destinationLng!),
-                infoWindow: const InfoWindow(title: 'Destino'),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueRed),
-              ),
-            );
-          });
-        }
-
-        print("La pinche cantidad de marcadores fue: ${markers.length}");
-
-        if (markers.length > 1) {
-          context.read<RouteBloc>().add(GetTripsByLocationEvent(
-              request: GetTripsByLocationRequest(
-                  WeekDayId: DateTime.now().weekday,
-                  fromLatitude: state.originLat!,
-                  fromLongitude: state.originLng!,
-                  numberOfElements: 10,
-                  page: 1,
-                  ratioInMeters: 300,
-                  time: TimeOfDay(hour: 9, minute: 30),
-                  timeZoneId: 1,
-                  toLatitude: state.destinationLat!,
-                  toLongitude: state.destinationLng!)));
-        }
-      }
 
       void miFuncion() {
         print("Hola, estoy ejecutando miFuncion!");
@@ -218,6 +171,58 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     stops = {};
                   }
                 });
+              }
+
+              if (state is RouteLocationState) {
+                if (state.originLat != null && state.originLng != null) {
+                  print(
+                      "El origen fue: ${state.originLat!} + ${state.originLng!}");
+                  setState(() {
+                    markers.add(
+                      Marker(
+                        markerId: const MarkerId('origin'),
+                        position: LatLng(state.originLat!, state.originLng!),
+                        infoWindow: const InfoWindow(title: 'Origen'),
+                        icon: BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueGreen),
+                      ),
+                    );
+                  });
+                }
+
+                if (state.destinationLat != null &&
+                    state.destinationLng != null) {
+                  setState(() {
+                    markers.add(
+                      Marker(
+                        markerId: const MarkerId('destination'),
+                        position: LatLng(
+                            state.destinationLat!, state.destinationLng!),
+                        infoWindow: const InfoWindow(title: 'Destino'),
+                        icon: BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueRed),
+                      ),
+                    );
+                  });
+                }
+
+                print(
+                    "La pinche cantidad de marcadores fue: ${markers.length}");
+
+                if (markers.length > 1) {
+                  context.read<RouteBloc>().add(GetTripsByLocationEvent(
+                      request: GetTripsByLocationRequest(
+                          WeekDayId: DateTime.now().weekday,
+                          fromLatitude: state.originLat!,
+                          fromLongitude: state.originLng!,
+                          numberOfElements: 10,
+                          page: 1,
+                          ratioInMeters: 300,
+                          time: TimeOfDay(hour: 9, minute: 30),
+                          timeZoneId: 1,
+                          toLatitude: state.destinationLat!,
+                          toLongitude: state.destinationLng!)));
+                }
               }
             }),
             BlocListener<BusesBloc, BusesState>(
