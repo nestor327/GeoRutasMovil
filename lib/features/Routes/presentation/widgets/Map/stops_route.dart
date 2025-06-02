@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:georutasmovil/features/Routes/domain/entities/get_coordinates_between_stops_request.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/trip.dart';
 import 'package:georutasmovil/features/Routes/domain/entities/trip_paginated.dart';
 import 'package:georutasmovil/features/Routes/presentation/bloc/routes/route_bloc.dart';
@@ -28,6 +29,13 @@ class _StopsRouteState extends State<StopsRoute> {
           //Obtener la lista de viajes
           tripPaginated = state.response;
           viajes = tripPaginated.Records;
+
+          //Hay que actualizar el endpoint para que reciba un conjunto de intervalos de paradas
+
+          context.read<RouteBloc>().add(GetCoordinatesBetweenStopsEvent(
+              request: GetCoordinatesBetweenStopsRequest(
+                  FromStopId: viajes[0].Trips[0].FromStopId,
+                  ToStopId: viajes[0].Trips[0].ToStopId)));
         }
       })
     ], child: const Placeholder());
